@@ -57,8 +57,7 @@ public class Cliente {
         // Creamos un string con la url del cliente
         // Creamos un cliente de la clase HttpCliente
         // Creamos un objeto de la clase GetMethod con la url de antes
-        // Ejecutamos el método en el cliente
-        // Guardamos en respuesta la respuesta que obtengamos
+        // Ejecutamos el método en el cliente y guardamos la respuesta que obtengamos
         
         // Para hacer una prueba leemos de un fichero que hemos creado
         
@@ -68,6 +67,9 @@ public class Cliente {
     
     private File mensajeAltaTienda(){
         
+        // Mismos pasos iniciales
+        // Para darnos de alta en la tienda necesitamos su IP y pedir permiso al monitor
+        // Recibiremos un mensaje de la tienda que nos indique que nos hemos dado de alta correctamente
         
         File fichero = new File("./project/nbproject/respuestas/RespuestaAltaTienda.txt");
         return fichero;
@@ -75,26 +77,48 @@ public class Cliente {
     }
     
     private File mensajeConsultaProductos(){
+        
+        // Mismos pasos iniciales de antes
+        // Consultamos a la tienda la lista de todos sus productos
+        
         File fichero = new File("./project/nbproject/respuestas/RespuestaListaProductos.txt");
         return fichero;
     }
     
     private File mensajeCompraProductos(){
+        
+        // Mismos pasos iniciales de antes
+        // Cuando hayamos consultado los productos que tiene la tienda, le indicamos cuales queremos comprar
+        // (todos los que tengan de nuestra lista)
+        
         File fichero = new File("./project/nbproject/respuestas/RespuestaComprarProductos.txt");
         return fichero;
     }
     
     private File mensajeConsultaClientes(){
+        
+        // Mismos pasos iniciales de antes
+        // Pedimos a la tienda los Id de todos los clientes que están en la tienda
+        
         File fichero = new File("./project/nbproject/respuestas/RespuestaListaClientes.txt");
         return fichero;
     }
     
     private File mensajeConsultaTiendas(){
+        
+        // Mismos pasos iniciales de antes
+        // Pedimos a la tienda las tiendas que conozca un cliente conociendo su Id
+        
         File fichero = new File("./project/nbproject/respuestas/RespuestaListaTiendas.txt");
         return fichero;
     }
     
     private File mensajeBajaTiendas(){
+        
+        // Mismos pasos iniciales
+        // Para darnos de baja en la tienda necesitamos su IP y pedir permiso al monitor
+        // Recibiremos un mensaje de la tienda que nos indique que nos hemos dado de baja correctamente
+        
         File fichero = new File("./project/nbproject/respuestas/RespuestaBajaTiendas.txt");
         return fichero;
     }
