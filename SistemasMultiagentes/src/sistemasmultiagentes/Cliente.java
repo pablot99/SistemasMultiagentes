@@ -41,7 +41,7 @@ public class Cliente {
         // Para hacer una prueba leemos de un fichero que hemos creado
         
         BufferedReader respuesta = new BufferedReader(new FileReader("./project/nbproject/respuestas/RespuestaAltaMonitor.txt"));
-        
+        return "hola";
     }
     
     private String mensajeAltaTienda(){
