@@ -6,6 +6,7 @@
 package sistemasmultiagentes;
 
 import java.util.ArrayList;
+import sun.net.www.http.HttpClient;
 
 /**
  *
@@ -41,12 +42,32 @@ public class Cliente {
         
     }
     
+    
+    // como aún no podemos recibir mensajes de la tienda, leemos de un fichero de texto
+    // mensajes que hemos escrito
+    
     private String mensajeAltaMonitor(){
-        return "por hacer";
+        
+
+        // Creamos un string con la respuesta que recibimos
+        // Creamos un string con la url del cliente
+        // Creamos un cliente de la clase HttpCliente
+        // Creamos un objeto de la clase GetMethod con la url de antes
+        // Ejecutamos el método en el cliente
+        // Guardamos en respuesta la respuesta que obtengamos
+        
+        // Para hacer una prueba leemos de un fichero que hemos creado
+        
+        return "a";
+        
+        
     }
     
     private String mensajeAltaTienda(){
-        return "por hacer";
+        
+        
+        return "hola";
+        
     }
     
     private String mensajeConsultaProductos(){

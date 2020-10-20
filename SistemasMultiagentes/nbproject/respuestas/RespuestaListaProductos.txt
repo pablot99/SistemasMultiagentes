@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<head>
+    lista
+</head>
+<body>
+    <productos>
+    	 <nombre> Agua </nombre>
+	 <nombre> Leche </nombre>
+	 <nombre> Lata de atun </nombre>
+	 <nombre> Lechuga </nombre>
+	 <nombre> Tomates </nombre>
+         <nombre> Latas de cerveza </nombre>
+	 <nombre> Naranjas </nombre>
+         <nombre> Queso manchego </nombre>
+    </productos>
+</body>

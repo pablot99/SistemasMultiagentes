@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<head>
+    altamonitor
+</head>
+<body>
+    <dir>
+        192.168...
+    </dir>
+    <idtiendas>
+	<id> 192.168... </id1>
+	<id> 192.168... </id1>
+    </idtiendas>
+    <productos>
+	<nombre> Agua </nombre
+	<cantidad> 6 </cantidad>
+	<nombre> Leche </nombre
+	<cantidad> 2 </cantidad>
+	<nombre> Cereales </nombre
+	<cantidad> 1 </cantidad>
+    </productos>
+</body>

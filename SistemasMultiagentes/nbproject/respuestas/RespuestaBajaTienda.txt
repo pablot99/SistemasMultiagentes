@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<head>
+    AltaTienda
+</head>
+<body>
+    <mensaje> Dado de baja con éxito </mensaje>
+</body>
