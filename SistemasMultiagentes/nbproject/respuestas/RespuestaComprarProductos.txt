@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<head>
+    compraproductos
+</head>
+<body>
+    <producto>
+        <nombre>
+            asdasd
+        </nombre>
+        <cantidad>
+            15
+        </cantidad>
+    </producto>
+    <producto>
+        <nombre>
+            asdasd
+        </nombre>
+        <cantidad>
+            25
+        </cantidad>
+    </producto>
+    <producto>
+        <nombre>
+            aseae
+        </nombre>
+        <cantidad>
+            98
+        </cantidad>
+    </producto>
+    ...
+</body>
