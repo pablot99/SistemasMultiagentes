@@ -26,7 +26,7 @@ public class SistemasMultiagentes {
         ip = teclado.nextLine();
         
         while(i<100){
-            Cliente comprador = new Cliente(); //Pasara IP al constructor 
+            Cliente comprador = new Cliente(ip); //Pasara IP al constructor 
             compradores.add(comprador);
             i++;
         }
