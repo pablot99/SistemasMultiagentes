@@ -5,6 +5,9 @@
  */
 package sistemasmultiagentes;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import sun.net.www.http.HttpClient;
 
 /**
@@ -25,7 +28,7 @@ public class Cliente {
     // como aún no podemos recibir mensajes de la tienda, leemos de un fichero de texto
     // mensajes que hemos escrito
     
-    private String mensajeAltaMonitor(){
+    private String mensajeAltaMonitor() throws FileNotFoundException{
         
 
         // Creamos un string con la respuesta que recibimos
@@ -37,8 +40,7 @@ public class Cliente {
         
         // Para hacer una prueba leemos de un fichero que hemos creado
         
-        return "a";
-        
+        BufferedReader respuesta = new BufferedReader(new FileReader("./project/nbproject/respuestas/RespuestaAltaMonitor.txt"));
         
     }
     
