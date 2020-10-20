@@ -6,6 +6,7 @@
 package sistemasmultiagentes;
 
 import java.util.HashMap;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -29,6 +30,11 @@ public class Productos {
         for (Integer[] prod : prods) {
             this.productos.put(prod[0], prod[1]);
         }
+    }
+    
+    //Crear una lista de productos a partir de un XML
+    public Productos(Document DOM){
+         productos = new HashMap<>();
     }
     
     /**
@@ -65,6 +71,10 @@ public class Productos {
      */
     public HashMap<Integer,Integer> getProductos() {
         return productos;
+    }
+    
+    public boolean isEmpty(){
+        return this.productos.isEmpty();
     }
     
 }

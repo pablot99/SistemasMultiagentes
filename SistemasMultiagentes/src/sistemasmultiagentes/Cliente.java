@@ -10,6 +10,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
+import org.w3c.dom.Element;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import sun.net.www.http.HttpClient;
 
 /**
@@ -43,7 +53,44 @@ public class Cliente {
     }
     
     public void funcionDelCliente(){
-        
+        while(!productos.isEmpty()){
+            //Me doy de alta en la tienda
+            Document respuestaAltaTienda = xmlToDom(mensajeAltaTienda());
+            System.out.println(respuestaAltaTienda);
+            
+            //Pido catalogo
+            Document respuestaConsultaProductos = xmlToDom(mensajeConsultaProductos());
+            System.out.println(respuestaConsultaProductos);
+            Productos catalogo = new Productos(respuestaConsultaProductos);
+            
+            //Compro productos del catalogo
+            for(Map.Entry<Integer, Integer> par : catalogo.getProductos().entrySet()){
+                //si el producto esta en la lista de la compra
+                if(productos.getProductos().containsKey(par.getKey())){
+                    //Compro un producto
+                    Document respuestaCompraProducto = xmlToDom(mensajeCompraProductos());
+                    System.out.println(respuestaCompraProducto);
+                    //Resto cuanto he comprado
+                    //Quito producto de la lista si ya he comprado todo
+                }
+                //si no continuamos al siguiente producto
+            }
+            
+            //Pedimos la lista de clientes que hay en la tienda
+            Document respuestaConsultaClientes = xmlToDom(mensajeConsultaClientes());
+            System.out.println(respuestaConsultaClientes);
+            ArrayList<Integer> clientes = new ArrayList<>();
+                ///leer la respuesta y escribirla en la lista
+            for(int cliente: clientes){
+                Document respuestaConsultaTiendas = xmlToDom(mensajeConsultaTiendas());
+                System.out.println(respuestaConsultaTiendas);
+                //añadimos tiendas a la lista
+            }
+            
+            //Nos damos de baja en la tienda y vamos a la sigiente
+            Document respuestaBajaTienda = xmlToDom(mensajeBajaTiendas());
+            System.out.println(respuestaBajaTienda);
+        }
     }
     
     
@@ -99,5 +146,17 @@ public class Cliente {
         return fichero;
     }
     
+    private Document xmlToDom(File f){
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(f);
+            doc.getDocumentElement().normalize();
+            return doc;
+        } catch (Exception ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
     
 }
