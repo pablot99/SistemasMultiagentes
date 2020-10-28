@@ -6,6 +6,7 @@
             <name>SistemasMultiagentes</name>
             <source-roots>
                 <root id="src.dir"/>
+                <root id="src.respuestas.dir"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>

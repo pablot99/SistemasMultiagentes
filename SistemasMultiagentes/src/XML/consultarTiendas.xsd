@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : consultarTiendas.xsl
+    Created on : 28 de octubre de 2020, 12:45
+    Author     : bitde
+    Description:
+        Purpose of transformation follows.
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="ConsultaTiendas">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="receptor" type="xs:string"/>
+      <xs:element name="emisor" type="xs:string"/>
+      <xs:element name="cliente" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+</xs:schema>
