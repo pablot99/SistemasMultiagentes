@@ -6,21 +6,15 @@
 package sistemasmultiagentes;
 
 import java.util.ArrayList;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import sun.net.www.http.HttpClient;
 
 /**
  *
@@ -30,21 +24,21 @@ public class Cliente {
     
     private static int id;                      // ID del Cliente
     private static String ipMonitor;            // IP del Monitor
-    private static ArrayList<String> tiendas;   // Tiendas conocidas por el Cliente
+    private static HashSet<Tienda> tiendas;     // Tiendas conocidas por el Cliente
     private static Productos productos;         // Productos a comprar
     
     
     /**
      * Constructor para el cliente. Inicializa las variables y obtiene del Monitor
-     * el ID del Cliente, la Lista de Productos y 2 Tiendas conocidas.
+     * el ID del Cliente, la Lista de Productos y 2 Tienda conocidas.
      * @param ip IP del Monitor
     */
     public Cliente(String ip){
         // Inicializaciones
         ipMonitor = ip;
-	tiendas = new ArrayList<>();
+        tiendas = new HashSet<>();
 	
-        /* Se pide al monitor el ID, la Lista de Productos y las Tiendas
+        /* Se pide al monitor el ID, la Lista de Productos y las Tienda
          * conocidas mediante el mensaje "mensajeAltaMonitor()". */
         String respuesta = mensajeAltaMonitor();
         id = respuesta[0];

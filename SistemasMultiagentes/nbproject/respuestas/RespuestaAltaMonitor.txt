@@ -10,12 +10,16 @@
 	<id> 192.168... </id1>
 	<id> 192.168... </id1>
     </idtiendas>
-    <productos>
+    <producto>
 	<nombre> Agua </nombre
 	<cantidad> 6 </cantidad>
+    </producto>
+    <producto>
 	<nombre> Leche </nombre
 	<cantidad> 2 </cantidad>
+    </producto>
+    <producto>
 	<nombre> Cereales </nombre
 	<cantidad> 1 </cantidad>
-    </productos>
+    </producto>
 </body>
