@@ -40,10 +40,10 @@ public class Cliente {
 	
         /* Se pide al monitor el ID, la Lista de Productos y las Tienda
          * conocidas mediante el mensaje "mensajeAltaMonitor()". */
-        String respuesta = mensajeAltaMonitor();
-        id = respuesta[0];
-        productos = new Productos(respuesta[1]);
-        tiendas = respuesta[2];
+        Object[] respuesta = mensajeAltaMonitor();
+        id = (Integer) respuesta[0];
+        productos = (Productos) respuesta[1];
+        tiendas = (HashSet) respuesta[2];
     }
     
     public void funcionDelCliente(){
@@ -91,7 +91,7 @@ public class Cliente {
     // como aún no podemos recibir mensajes de la tienda, leemos de un fichero de texto
     // mensajes que hemos escrito
     
-    private Document mensajeAltaMonitor() throws FileNotFoundException{
+    private Object[] mensajeAltaMonitor(){
         
 
         // Creamos un string con la respuesta que recibimos
@@ -101,9 +101,9 @@ public class Cliente {
         // Ejecutamos el método en el cliente y guardamos la respuesta que obtengamos
         
         // Para hacer una prueba leemos de un fichero que hemos creado
-        
-        File fichero = new File("./project/nbproject/respuestas/RespuestaAltaMonitor.txt");
-        return xmlToDom(fichero);
+
+        Object[] array = new Object[3];
+        return array;
     }
     
     private Document mensajeAltaTienda(){
