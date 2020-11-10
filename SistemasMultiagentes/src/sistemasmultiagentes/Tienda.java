@@ -31,6 +31,11 @@ public class Tienda {
         this.nombre = nombre;
     }
     
+    @Override
+    public String toString(){
+        return "Tienda " + id + ": " + nombre + "  -  " + ip + ":" + puerto;
+    }
+    
     /**
      *
      * @param o Objeto a comparar.

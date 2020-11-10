@@ -11,7 +11,9 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,13 +27,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class Cliente {
     
-    private final int id_interno;              // ID interno del Cliente (el número de cliente en el main)
-    private final int id;                      // ID del Cliente
-    private final String ipMonitor;            // IP del Monitor
-    private final HashSet<Tienda> tiendas;     // Tiendas conocidas por el Cliente
-    private final Productos productos;         // Productos a comprar
-    private final FileWriter fichero;          // FileWriter para escribir los logs
-    private final PrintWriter pw;              // PrintWriter para escribir los logs
+    private final int id_interno;                   // ID interno del Cliente (el número de cliente en el main)
+    private final int id;                           // ID del Cliente
+    private final String ipMonitor;                 // IP del Monitor
+    private final HashSet<Tienda> tConocidas;       // Tiendas conocidas por el Cliente
+    private final LinkedList<Tienda> tNoVisitadas;  // Tiendas visitadas por el Cliente
+    private final LinkedList<Tienda> tVisitadas;    // Tiendas visitadas por el Cliente
+    private final Productos productos;              // Productos a comprar
+    private final FileWriter fichero;               // FileWriter para escribir los logs
+    private final PrintWriter pw;                   // PrintWriter para escribir los logs
     
     /**
      * Constructor para el cliente. Inicializa las variables y obtiene del Monitor
@@ -44,6 +48,8 @@ public class Cliente {
         // Inicializaciones
         this.id_interno = id_interno;
         this.ipMonitor = ip;
+        this.fichero = new FileWriter(".\\logs\\cliente" + id_interno + ".txt",true);
+        this.pw = new PrintWriter(fichero);
 
         /* Se pide al monitor el ID, la Lista de Productos y las Tienda
          * conocidas mediante el mensaje "mensajeAltaMonitor()".
@@ -51,51 +57,66 @@ public class Cliente {
         Object[] respuesta = mensajeAltaMonitor();
         id = (Integer) respuesta[0];
         productos = (Productos) respuesta[1];
-        tiendas = (HashSet) respuesta[2];
+        tConocidas = (HashSet) respuesta[2];
+        tNoVisitadas = new LinkedList(tConocidas);
+        tVisitadas = new LinkedList();
 
-        this.fichero = new FileWriter(".\\logs\\cliente" + id_interno + ".txt",true);
-        this.pw = new PrintWriter(fichero);
+        pw.println("ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
+                 + "TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
+                 + "PRODUCTOS A COMPRAR: " + productos.toString() + "\n");
+
     }
     
     public void funcionDelCliente() throws IOException{
         while(!productos.isEmpty()){
+            // Obtenemos la primera tienda de la lista de no visitadas
+            Tienda tienda = tNoVisitadas.poll();
+            
             //Me doy de alta en la tienda
-            String respuestaAltaTienda = mensajeAltaTienda();
-            System.out.println(respuestaAltaTienda);
-            
+            String respuestaAltaTienda = mensajeAltaTienda(tienda);
+            pw.println("\nALTA en la tienda: " + tienda.toString());
             //Pido catalogo
-            //Document respuestaConsultaProductos = mensajeConsultaProductos();
-            //System.out.println(respuestaConsultaProductos);
-            Productos catalogo = mensajeConsultaProductos();
+            Productos catalogo = mensajeConsultaProductos(tienda);
+            pw.println(" Obtengo productos de la tienda.");
             
-            //Compro productos del catalogo
+            // Compro productos del catalogo
             for(Map.Entry<Integer, Integer> par : catalogo.getProductos().entrySet()){
-                //si el producto esta en la lista de la compra
+                // Si el producto esta en la lista de la compra
                 if(productos.getProductos().containsKey(par.getKey())){
                     int cant = productos.getProductos().get(par.getKey()); //par.getValue();
-                    //Si quiero 1 o mas unidades del producto lo compro
+                    // Si quiero 1 o mas unidades del producto lo compro
                     if (cant > 0){
-                        //Compro un producto
+                        // Compro un producto
                         int respuestaCompraProducto = mensajeCompraProductos(par.getKey());
-                        System.out.println(respuestaCompraProducto);
-                        //Resto cuanto he comprado
-                        productos.menosProducto(par.getKey(), cant);
+                        pw.println("   Compro " + cant + "unidades del producto " 
+                                + par.getKey() + ". Faltan " + productos.nProducto(par.getKey()));
+                        // Resto cuanto he comprado
+                        if (productos.menosProducto(par.getKey(), cant) == null)
+                            pw.println("\n\n  ---  ERROR AL RESTAR PRODUCTO --- \n\n");
                     }
-                    
                 }
-                //si no continuamos al siguiente producto
+                // Si no continuamos al siguiente producto
             }
             
             //Pedimos la lista de tiendas conocidas a la tienda
-            HashSet<Tienda> respuestaConsultaTiendas = mensajeConsultaTiendas();
-            System.out.println(respuestaConsultaTiendas);
-            //añadimos tiendas a la lista
-            for (Tienda t : respuestaConsultaTiendas){
-                tiendas.add(t);
-            }            
-            //Nos damos de baja en la tienda y vamos a la sigiente
+            ArrayList<Tienda> respuestaConsultaTiendas = mensajeConsultaTiendas(tienda);
+            pw.println(" Consultamos las tiendas conocidas.");
+            // Para cada tienda recibida
+            for (Tienda respuesta : respuestaConsultaTiendas) {
+                // La intentamos añadir a nuestro HashMap de tiendas conocidas
+                if (tConocidas.add(respuesta)) {
+                    // Y si se ha añadido (no estaba), también a no visitadas
+                    tNoVisitadas.add(respuesta);
+                    pw.println("   Nueva tienda: " + respuesta);
+                }
+            }
+      
+            // Nos damos de baja en la tienda
             String respuestaBajaTienda = mensajeBajaTiendas();
-            System.out.println(respuestaBajaTienda);
+            pw.println("BAJA en la tienda " + tienda);
+            
+            // Añadimos la tienda visitada al final de la lista de tiendas visitadas.
+            tVisitadas.add(tienda);
         }
         fichero.close();
     }

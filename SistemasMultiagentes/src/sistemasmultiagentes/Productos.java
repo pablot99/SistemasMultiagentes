@@ -6,6 +6,7 @@
 package sistemasmultiagentes;
 
 import java.util.HashMap;
+import java.util.Set;
 import org.w3c.dom.Document;
 
 /**
@@ -65,7 +66,25 @@ public class Productos {
         }
         return null;
     }
+    
+    /**
+     * Devuelve la cantidad de un Producto.
+     * @param id ID del Producto.
+     * @return La cantidad del producto.
+    */
+    public Integer nProducto(int id){
+        return getProductos().get(id);
+    }
 
+    @Override
+    public String toString(){
+        String aux = "";
+        for (Integer id: productos.keySet()){
+               aux += ("Producto " + id + ".\tCantidad:" + productos.get(id) + "\n");  
+        } 
+        return aux;
+    }
+    
     /**
      * @return El mapa con los ID de los Productos y sus Cantidades.
      */

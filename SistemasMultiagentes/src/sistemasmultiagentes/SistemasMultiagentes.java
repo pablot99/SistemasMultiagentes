@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalTime;
 
 /**
  *
@@ -51,6 +52,7 @@ public class SistemasMultiagentes {
     public static void crearFicheroLog(Cliente comprador, int n) throws IOException{
         FileWriter fichero = new FileWriter(".\\logs\\cliente" + n + ".txt");
         PrintWriter pw = new PrintWriter(fichero);
+        pw.println("COMPRADOR " + n + " creado a las " + LocalTime.now());
         fichero.close();
     }
     
