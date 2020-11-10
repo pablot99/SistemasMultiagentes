@@ -22,22 +22,23 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class Cliente {
     
-    private static int id;                      // ID del Cliente
-    private static String ipMonitor;            // IP del Monitor
-    private static HashSet<Tienda> tiendas;     // Tiendas conocidas por el Cliente
-    private static Productos productos;         // Productos a comprar
-    
+    private final int id_interno;              // ID interno del Cliente (el número de cliente en el main)
+    private final int id;                      // ID del Cliente
+    private final String ipMonitor;            // IP del Monitor
+    private final HashSet<Tienda> tiendas;     // Tiendas conocidas por el Cliente
+    private final Productos productos;         // Productos a comprar
     
     /**
      * Constructor para el cliente. Inicializa las variables y obtiene del Monitor
      * el ID del Cliente, la Lista de Productos y 2 Tienda conocidas.
      * @param ip IP del Monitor
+     * @param id_interno ID interno que utiliza el main para distinguir a cada Cliente
     */
-    public Cliente(String ip){
+    public Cliente(String ip, int id_interno){
         // Inicializaciones
-        ipMonitor = ip;
-        tiendas = new HashSet<>();
-	
+        this.id_interno = id_interno;
+        this.ipMonitor = ip;
+
         /* Se pide al monitor el ID, la Lista de Productos y las Tienda
          * conocidas mediante el mensaje "mensajeAltaMonitor()". */
         Object[] respuesta = mensajeAltaMonitor();
