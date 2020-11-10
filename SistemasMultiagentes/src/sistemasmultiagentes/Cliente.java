@@ -8,6 +8,9 @@ package sistemasmultiagentes;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.logging.Level;
@@ -27,27 +30,34 @@ public class Cliente {
     private final String ipMonitor;            // IP del Monitor
     private final HashSet<Tienda> tiendas;     // Tiendas conocidas por el Cliente
     private final Productos productos;         // Productos a comprar
+    private final FileWriter fichero;          // FileWriter para escribir los logs
+    private final PrintWriter pw;              // PrintWriter para escribir los logs
     
     /**
      * Constructor para el cliente. Inicializa las variables y obtiene del Monitor
      * el ID del Cliente, la Lista de Productos y 2 Tienda conocidas.
      * @param ip IP del Monitor
      * @param id_interno ID interno que utiliza el main para distinguir a cada Cliente
+     * @throws java.io.IOException
     */
-    public Cliente(String ip, int id_interno){
+    public Cliente(String ip, int id_interno) throws IOException{
         // Inicializaciones
         this.id_interno = id_interno;
         this.ipMonitor = ip;
 
         /* Se pide al monitor el ID, la Lista de Productos y las Tienda
-         * conocidas mediante el mensaje "mensajeAltaMonitor()". */
+         * conocidas mediante el mensaje "mensajeAltaMonitor()".
+        */
         Object[] respuesta = mensajeAltaMonitor();
         id = (Integer) respuesta[0];
         productos = (Productos) respuesta[1];
         tiendas = (HashSet) respuesta[2];
+
+        this.fichero = new FileWriter(".\\logs\\cliente" + id_interno + ".txt",true);
+        this.pw = new PrintWriter(fichero);
     }
     
-    public void funcionDelCliente(){
+    public void funcionDelCliente() throws IOException{
         while(!productos.isEmpty()){
             //Me doy de alta en la tienda
             Document respuestaAltaTienda = mensajeAltaTienda();
@@ -86,6 +96,7 @@ public class Cliente {
             Document respuestaBajaTienda = mensajeBajaTiendas();
             System.out.println(respuestaBajaTienda);
         }
+        fichero.close();
     }
     
     

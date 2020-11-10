@@ -4,6 +4,10 @@
  * and open the template in the editor.
  */
 package sistemasmultiagentes;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -15,37 +19,39 @@ public class SistemasMultiagentes {
 
     /**
      * @param args the command line arguments
+     * @throws java.io.IOException
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        
+        int nCompradores = 10;
         
         ArrayList<Cliente> compradores = new ArrayList<>();
-        int i = 0;
         String ip;
         Scanner teclado = new Scanner(System.in);
         
         System.out.println("Introduce el ip del monitor:");
         ip = teclado.nextLine();
         
-        while(i<100){
+        for (int i = 0; i < nCompradores; i++) {
             Cliente comprador = new Cliente(ip,i); //Pasar IP al constructor 
             compradores.add(comprador);
-            i++;
+            crearFicheroLog(comprador, i);
         }
-        
+        /*
         for(Cliente comprador : compradores){
-            final Cliente aux = comprador;
             new Thread(){
                 @Override
                 public void run(){
-                    System.out.println("Se ha creado un nuevo comprador");
-                    aux.funcionDelCliente();
+                    comprador.funcionDelCliente();
                 }
             }.start();
-        }
+        }*/
     }
     
-    public static void crearFicheroLog(){
-        
+    public static void crearFicheroLog(Cliente comprador, int n) throws IOException{
+        FileWriter fichero = new FileWriter(".\\logs\\cliente" + n + ".txt");
+        PrintWriter pw = new PrintWriter(fichero);
+        fichero.close();
     }
     
 }
