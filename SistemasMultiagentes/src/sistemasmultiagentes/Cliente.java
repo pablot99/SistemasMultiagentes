@@ -22,28 +22,29 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class Cliente {
     
-    private static int id;                      // ID del Cliente
-    private static String ipMonitor;            // IP del Monitor
-    private static HashSet<Tienda> tiendas;     // Tiendas conocidas por el Cliente
-    private static Productos productos;         // Productos a comprar
-    
+    private final int id_interno;              // ID interno del Cliente (el número de cliente en el main)
+    private final int id;                      // ID del Cliente
+    private final String ipMonitor;            // IP del Monitor
+    private final HashSet<Tienda> tiendas;     // Tiendas conocidas por el Cliente
+    private final Productos productos;         // Productos a comprar
     
     /**
      * Constructor para el cliente. Inicializa las variables y obtiene del Monitor
      * el ID del Cliente, la Lista de Productos y 2 Tienda conocidas.
      * @param ip IP del Monitor
+     * @param id_interno ID interno que utiliza el main para distinguir a cada Cliente
     */
-    public Cliente(String ip){
+    public Cliente(String ip, int id_interno){
         // Inicializaciones
-        ipMonitor = ip;
-        tiendas = new HashSet<>();
-	
+        this.id_interno = id_interno;
+        this.ipMonitor = ip;
+
         /* Se pide al monitor el ID, la Lista de Productos y las Tienda
          * conocidas mediante el mensaje "mensajeAltaMonitor()". */
-        String respuesta = mensajeAltaMonitor();
-        id = respuesta[0];
-        productos = new Productos(respuesta[1]);
-        tiendas = respuesta[2];
+        Object[] respuesta = mensajeAltaMonitor();
+        id = (Integer) respuesta[0];
+        productos = (Productos) respuesta[1];
+        tiendas = (HashSet) respuesta[2];
     }
     
     public void funcionDelCliente(){
@@ -92,7 +93,7 @@ public class Cliente {
     // como aún no podemos recibir mensajes de la tienda, leemos de un fichero de texto
     // mensajes que hemos escrito
     
-    private Document mensajeAltaMonitor() throws FileNotFoundException{
+    private Object[] mensajeAltaMonitor(){
         
 
         // Creamos un string con la respuesta que recibimos
@@ -102,9 +103,9 @@ public class Cliente {
         // Ejecutamos el método en el cliente y guardamos la respuesta que obtengamos
         
         // Para hacer una prueba leemos de un fichero que hemos creado
-        
-        File fichero = new File("./project/nbproject/respuestas/RespuestaAltaMonitor.txt");
-        return xmlToDom(fichero);
+
+        Object[] array = new Object[3];
+        return array;
     }
     
     private Document mensajeAltaTienda(){

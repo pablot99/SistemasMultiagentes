@@ -18,15 +18,16 @@ public class SistemasMultiagentes {
      */
     public static void main(String[] args) {
         
-        ArrayList<Cliente> compradores = new ArrayList<Cliente>();
+        ArrayList<Cliente> compradores = new ArrayList<>();
         int i = 0;
+        String ip;
         Scanner teclado = new Scanner(System.in);
-        String ip = new String();
+        
         System.out.println("Introduce el ip del monitor:");
         ip = teclado.nextLine();
         
         while(i<100){
-            Cliente comprador = new Cliente(ip); //Pasara IP al constructor 
+            Cliente comprador = new Cliente(ip,i); //Pasar IP al constructor 
             compradores.add(comprador);
             i++;
         }
@@ -34,12 +35,17 @@ public class SistemasMultiagentes {
         for(Cliente comprador : compradores){
             final Cliente aux = comprador;
             new Thread(){
+                @Override
                 public void run(){
                     System.out.println("Se ha creado un nuevo comprador");
                     aux.funcionDelCliente();
                 }
             }.start();
         }
+    }
+    
+    public static void crearFicheroLog(){
+        
     }
     
 }
