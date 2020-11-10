@@ -49,40 +49,41 @@ public class Cliente {
     public void funcionDelCliente(){
         while(!productos.isEmpty()){
             //Me doy de alta en la tienda
-            Document respuestaAltaTienda = mensajeAltaTienda();
+            String respuestaAltaTienda = mensajeAltaTienda();
             System.out.println(respuestaAltaTienda);
             
             //Pido catalogo
-            Document respuestaConsultaProductos = mensajeConsultaProductos();
-            System.out.println(respuestaConsultaProductos);
-            Productos catalogo = new Productos(respuestaConsultaProductos);
+            //Document respuestaConsultaProductos = mensajeConsultaProductos();
+            //System.out.println(respuestaConsultaProductos);
+            Productos catalogo = mensajeConsultaProductos();
             
             //Compro productos del catalogo
             for(Map.Entry<Integer, Integer> par : catalogo.getProductos().entrySet()){
                 //si el producto esta en la lista de la compra
                 if(productos.getProductos().containsKey(par.getKey())){
-                    //Compro un producto
-                    Document respuestaCompraProducto = mensajeCompraProductos();
-                    System.out.println(respuestaCompraProducto);
-                    //Resto cuanto he comprado
-                    //Quito producto de la lista si ya he comprado todo
+                    int cant = productos.getProductos().get(par.getKey()); //par.getValue();
+                    //Si quiero 1 o mas unidades del producto lo compro
+                    if (cant > 0){
+                        //Compro un producto
+                        int respuestaCompraProducto = mensajeCompraProductos(par.getKey());
+                        System.out.println(respuestaCompraProducto);
+                        //Resto cuanto he comprado
+                        productos.menosProducto(par.getKey(), cant);
+                    }
+                    
                 }
                 //si no continuamos al siguiente producto
             }
             
-            //Pedimos la lista de clientes que hay en la tienda
-            Document respuestaConsultaClientes = mensajeConsultaClientes();
-            System.out.println(respuestaConsultaClientes);
-            ArrayList<Integer> clientes = new ArrayList<>();
-                ///leer la respuesta y escribirla en la lista
-            for(int cliente: clientes){
-                Document respuestaConsultaTiendas = mensajeConsultaTiendas();
-                System.out.println(respuestaConsultaTiendas);
-                //añadimos tiendas a la lista
-            }
-            
+            //Pedimos la lista de tiendas conocidas a la tienda
+            HashSet<Tienda> respuestaConsultaTiendas = mensajeConsultaTiendas();
+            System.out.println(respuestaConsultaTiendas);
+            //añadimos tiendas a la lista
+            for (Tienda t : respuestaConsultaTiendas){
+                tiendas.add(t);
+            }            
             //Nos damos de baja en la tienda y vamos a la sigiente
-            Document respuestaBajaTienda = mensajeBajaTiendas();
+            String respuestaBajaTienda = mensajeBajaTiendas();
             System.out.println(respuestaBajaTienda);
         }
     }
