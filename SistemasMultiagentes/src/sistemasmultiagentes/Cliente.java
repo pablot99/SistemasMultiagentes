@@ -140,34 +140,34 @@ public class Cliente {
         return array;
     }
     
-    private Document mensajeAltaTienda(){
+    private String mensajeAltaTienda(Tienda tienda){
         
         // Mismos pasos iniciales
         // Para darnos de alta en la tienda necesitamos su IP y pedir permiso al monitor
         // Recibiremos un mensaje de la tienda que nos indique que nos hemos dado de alta correctamente
         
-        File fichero = new File("./project/nbproject/respuestas/RespuestaAltaTienda.txt");
-        return xmlToDom(fichero);
+        String respuesta = "Se ha dado de alta correctamente";
+        return respuesta;
         
     }
     
-    private Document mensajeConsultaProductos(){
+    private Productos mensajeConsultaProductos(Tienda tienda){
         
         // Mismos pasos iniciales de antes
         // Consultamos a la tienda la lista de todos sus productos
-        
-        File fichero = new File("./project/nbproject/respuestas/RespuestaListaProductos.txt");
-        return xmlToDom(fichero);
+        File fichero = new File("./project/nbproject/respuestas/RespuestaBajaTiendas.txt");
+        Productos productos = new Productos(xmlToDom(fichero));
+        return productos;
     }
     
-    private Document mensajeCompraProductos(){
-        
+    private int mensajeCompraProductos(int par){
+        int cantidad = 0;
         // Mismos pasos iniciales de antes
         // Cuando hayamos consultado los productos que tiene la tienda, le indicamos cuales queremos comprar
         // (todos los que tengan de nuestra lista)
         
-        File fichero = new File("./project/nbproject/respuestas/RespuestaComprarProductos.txt");
-        return xmlToDom(fichero);
+        
+        return cantidad;
     }
     
     private Document mensajeConsultaClientes(){
@@ -179,23 +179,21 @@ public class Cliente {
         return xmlToDom(fichero);
     }
     
-    private Document mensajeConsultaTiendas(){
-        
+    private ArrayList<Tienda> mensajeConsultaTiendas(Tienda tienda){
+        ArrayList<Tienda> tiendasSiguientes = new ArrayList<Tienda>();
         // Mismos pasos iniciales de antes
         // Pedimos a la tienda las tiendas que conozca un cliente conociendo su Id
         
-        File fichero = new File("./project/nbproject/respuestas/RespuestaListaTiendas.txt");
-        return xmlToDom(fichero);
+        return tiendasSiguientes;
     }
     
-    private Document mensajeBajaTiendas(){
-        
+    private String mensajeBajaTiendas(){
+        String respuesta = "Se ha dado de baja correctamente";
         // Mismos pasos iniciales
         // Para darnos de baja en la tienda necesitamos su IP y pedir permiso al monitor
         // Recibiremos un mensaje de la tienda que nos indique que nos hemos dado de baja correctamente
         
-        File fichero = new File("./project/nbproject/respuestas/RespuestaBajaTiendas.txt");
-        return xmlToDom(fichero);
+        return respuesta;
     }
     
     private Document xmlToDom(File f){
