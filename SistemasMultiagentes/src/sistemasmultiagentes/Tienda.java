@@ -23,6 +23,7 @@ public class Tienda {
      * @param id ID de la tienda.
      * @param ip IP de la tienda.
      * @param puerto Puerto de la tienda.
+     * @param nombre Nombre de la tienda.
     */
     public Tienda(int id, String ip, int puerto, String nombre){
         this.id = id;

@@ -6,8 +6,6 @@
 package sistemasmultiagentes;
 
 import java.util.ArrayList;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,11 +13,6 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.w3c.dom.Document;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  *
@@ -31,11 +24,13 @@ public class Cliente {
     private final int id;                           // ID del Cliente
     private final String ipMonitor;                 // IP del Monitor
     private final HashSet<Tienda> tConocidas;       // Tiendas conocidas por el Cliente
-    private final LinkedList<Tienda> tNoVisitadas;  // Tiendas visitadas por el Cliente
-    private final LinkedList<Tienda> tVisitadas;    // Tiendas visitadas por el Cliente
+    private LinkedList<Tienda> tNoVisitadas;        // Tiendas visitadas por el Cliente
+    private LinkedList<Tienda> tVisitadas;          // Tiendas visitadas por el Cliente
     private final Productos productos;              // Productos a comprar
-    private final FileWriter fichero;               // FileWriter para escribir los logs
-    private final PrintWriter pw;                   // PrintWriter para escribir los logs
+    private int nVueltas;                           // Veces que hemos recorrido el array de Tiendas
+    private final int MAXVUELTAS;                   // Máximo de vueltas que vamos a dar al array de Tiendas
+    public final FileWriter fichero;                // FileWriter para escribir los logs
+    public final PrintWriter pw;                    // PrintWriter para escribir los logs
     
     /**
      * Constructor para el cliente. Inicializa las variables y obtiene del Monitor
@@ -48,8 +43,10 @@ public class Cliente {
         // Inicializaciones
         this.id_interno = id_interno;
         this.ipMonitor = ip;
-        this.fichero = new FileWriter(".\\logs\\cliente" + id_interno + ".txt",true);
+        this.fichero = new FileWriter(".\\logs\\cliente" + id_interno + ".txt", true);
         this.pw = new PrintWriter(fichero);
+        this.nVueltas = 0;
+        this.MAXVUELTAS = 5;
 
         /* Se pide al monitor el ID, la Lista de Productos y las Tienda
          * conocidas mediante el mensaje "mensajeAltaMonitor()".
@@ -61,23 +58,28 @@ public class Cliente {
         tNoVisitadas = new LinkedList(tConocidas);
         tVisitadas = new LinkedList();
 
-        pw.println("ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
-                 + "TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
-                 + "PRODUCTOS A COMPRAR: " + productos.toString() + "\n");
-
+        pw.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
+                 + " TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
+                 + " PRODUCTOS A COMPRAR: " + productos.toString()+ "\n");
     }
     
     public void funcionDelCliente() throws IOException{
-        while(!productos.isEmpty()){
+        while(!productos.isEmpty() && nVueltas < MAXVUELTAS){
             // Obtenemos la primera tienda de la lista de no visitadas
+            if (tNoVisitadas.isEmpty()){
+                tNoVisitadas = tVisitadas;
+                tVisitadas = new LinkedList<>();
+                nVueltas ++;
+                pw.println("\n\n\n  DAMOS OTRA VUELTA A LAS TIENDAS\n\n");
+            }
             Tienda tienda = tNoVisitadas.poll();
             
             //Me doy de alta en la tienda
             String respuestaAltaTienda = mensajeAltaTienda(tienda);
-            pw.println("\nALTA en la tienda: " + tienda.toString());
+            pw.println("\n  ALTA en la tienda: " + tienda.toString());
             //Pido catalogo
             Productos catalogo = mensajeConsultaProductos(tienda);
-            pw.println(" Obtengo productos de la tienda.");
+            pw.println("    Obtengo productos de la tienda.");
             
             // Compro productos del catalogo
             for(Map.Entry<Integer, Integer> par : catalogo.getProductos().entrySet()){
@@ -90,8 +92,8 @@ public class Cliente {
                         int respuestaCompraProducto = mensajeCompraProductos(par.getKey());
                         // Resto cuanto he comprado
                         if (productos.menosProducto(par.getKey(), respuestaCompraProducto) == null)
-                            pw.println("\n\n  ---  ERROR AL RESTAR PRODUCTO --- \n\n");
-                        pw.println("   Compro " + respuestaCompraProducto + "unidades del producto " 
+                            pw.println("\n\n     ---  ERROR AL RESTAR PRODUCTO --- \n\n");
+                        pw.println("      Compro " + respuestaCompraProducto + " unidades del producto " 
                                 + par.getKey() + ". Faltan " + productos.nProducto(par.getKey()));
                         
                     }
@@ -101,20 +103,20 @@ public class Cliente {
             
             //Pedimos la lista de tiendas conocidas a la tienda
             ArrayList<Tienda> respuestaConsultaTiendas = mensajeConsultaTiendas(tienda);
-            pw.println(" Consultamos las tiendas conocidas.");
+            pw.println("    Consultamos las tiendas conocidas.");
             // Para cada tienda recibida
             for (Tienda respuesta : respuestaConsultaTiendas) {
                 // La intentamos añadir a nuestro HashMap de tiendas conocidas
                 if (tConocidas.add(respuesta)) {
                     // Y si se ha añadido (no estaba), también a no visitadas
                     tNoVisitadas.add(respuesta);
-                    pw.println("   Nueva tienda: " + respuesta);
+                    pw.println("      Nueva tienda: " + respuesta);
                 }
             }
       
             // Nos damos de baja en la tienda
             String respuestaBajaTienda = mensajeBajaTiendas();
-            pw.println("BAJA en la tienda " + tienda);
+            pw.println("  BAJA en la tienda " + tienda);
             
             // Añadimos la tienda visitada al final de la lista de tiendas visitadas.
             tVisitadas.add(tienda);
@@ -127,17 +129,27 @@ public class Cliente {
     // mensajes que hemos escrito
     
     private Object[] mensajeAltaMonitor(){
-        
-
-        // Creamos un string con la respuesta que recibimos
-        // Creamos un string con la url del cliente
-        // Creamos un cliente de la clase HttpCliente
-        // Creamos un objeto de la clase GetMethod con la url de antes
-        // Ejecutamos el método en el cliente y guardamos la respuesta que obtengamos
-        
-        // Para hacer una prueba leemos de un fichero que hemos creado
-
         Object[] array = new Object[3];
+        
+        // Añadimos el ID
+        array[0] = (int) (Math.random() * 10000);
+        
+        // Añadimos los Productos
+        Integer [][] prod = new Integer[3][2];
+        for (int i = 0; i < prod.length; i++) {
+            prod[i][0] = i;
+            prod[i][1] = (int) (1 + (Math.random() * 100));
+        }
+        
+        array[1] = new Productos(prod);
+        
+        // Añadimos las Tiendas
+        HashSet tiendas = new HashSet();
+        tiendas.add(new Tienda(0, "192.168.1.1", 62, "Mercadona"));
+        tiendas.add(new Tienda(1, "192.168.1.2", 62, "El Corte Inglés"));
+        
+        array[2] = tiendas;
+        
         return array;
     }
     
@@ -156,8 +168,8 @@ public class Cliente {
         
         // Mismos pasos iniciales de antes
         // Consultamos a la tienda la lista de todos sus productos
-        File fichero = new File("./project/nbproject/respuestas/RespuestaBajaTiendas.txt");
-        Productos productos = new Productos(xmlToDom(fichero));
+        //File fichero = new File("./project/nbproject/respuestas/RespuestaBajaTiendas.txt");
+        //Productos productos = new Productos(xmlToDom(fichero));
         return productos;
     }
     
@@ -169,15 +181,6 @@ public class Cliente {
         
         
         return cantidad;
-    }
-    
-    private Document mensajeConsultaClientes(){
-        
-        // Mismos pasos iniciales de antes
-        // Pedimos a la tienda los Id de todos los clientes que están en la tienda
-        
-        File fichero = new File("./project/nbproject/respuestas/RespuestaListaClientes.txt");
-        return xmlToDom(fichero);
     }
     
     private ArrayList<Tienda> mensajeConsultaTiendas(Tienda tienda){
@@ -197,6 +200,7 @@ public class Cliente {
         return respuesta;
     }
     
+    /*
     private Document xmlToDom(File f){
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -209,5 +213,12 @@ public class Cliente {
             return null;
         }
     }
-    
+    */
+
+    /**
+     * @return the id_interno
+     */
+    public int getId_interno() {
+        return id_interno;
+    }
 }

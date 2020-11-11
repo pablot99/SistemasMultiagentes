@@ -78,9 +78,9 @@ public class Productos {
 
     @Override
     public String toString(){
-        String aux = "";
+        String aux = "\n";
         for (Integer id: productos.keySet()){
-               aux += ("Producto " + id + ".\tCantidad:" + productos.get(id) + "\n");  
+               aux += ("   Producto " + id + ".\tCantidad:" + productos.get(id) + "\n");  
         } 
         return aux;
     }

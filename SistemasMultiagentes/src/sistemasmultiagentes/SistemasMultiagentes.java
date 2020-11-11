@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -34,25 +36,34 @@ public class SistemasMultiagentes {
         ip = teclado.nextLine();
         
         for (int i = 0; i < nCompradores; i++) {
+            crearFicheroLog(i);
             Cliente comprador = new Cliente(ip,i); //Pasar IP al constructor 
             compradores.add(comprador);
-            crearFicheroLog(comprador, i);
         }
-        /*
+        
         for(Cliente comprador : compradores){
             new Thread(){
                 @Override
                 public void run(){
-                    comprador.funcionDelCliente();
+                    try {
+                        comprador.funcionDelCliente();
+                    } catch (Exception ex) {
+                        try {
+                            System.out.println("  EXCEPCIÓN EN CLIENTE " + comprador.getId_interno());
+                            comprador.pw.println("\n\n\n  EXCEPCIÓN EN CLIENTE " + comprador.getId_interno());
+                            comprador.fichero.close();
+                            throw ex;
+                        } catch (IOException ex1) { }
+                    }
                 }
             }.start();
-        }*/
+        }
     }
     
-    public static void crearFicheroLog(Cliente comprador, int n) throws IOException{
+    public static void crearFicheroLog(int n) throws IOException{
         FileWriter fichero = new FileWriter(".\\logs\\cliente" + n + ".txt");
         PrintWriter pw = new PrintWriter(fichero);
-        pw.println("COMPRADOR " + n + " creado a las " + LocalTime.now());
+        pw.println("\n COMPRADOR " + n + " creado a las " + LocalTime.now() + "\n");
         fichero.close();
     }
     
