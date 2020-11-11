@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
@@ -20,17 +21,17 @@ import java.util.Map;
  */
 public class Cliente {
     
-    private final int id_interno;                   // ID interno del Cliente (el número de cliente en el main)
-    private final int id;                           // ID del Cliente
-    private final String ipMonitor;                 // IP del Monitor
-    private final HashSet<Tienda> tConocidas;       // Tiendas conocidas por el Cliente
-    private LinkedList<Tienda> tNoVisitadas;        // Tiendas visitadas por el Cliente
-    private LinkedList<Tienda> tVisitadas;          // Tiendas visitadas por el Cliente
-    private final Productos productos;              // Productos a comprar
-    private int nVueltas;                           // Veces que hemos recorrido el array de Tiendas
-    private final int MAXVUELTAS;                   // Máximo de vueltas que vamos a dar al array de Tiendas
-    public final FileWriter fichero;                // FileWriter para escribir los logs
-    public final PrintWriter pw;                    // PrintWriter para escribir los logs
+    private final int id_interno;                       // ID interno del Cliente (el número de cliente en el main)
+    private final int id;                               // ID del Cliente
+    private final String ipMonitor;                     // IP del Monitor
+    private final HashSet<Tienda> tConocidas;           // Tiendas conocidas por el Cliente
+    private LinkedList<Tienda> tNoVisitadas;            // Tiendas visitadas por el Cliente
+    private LinkedList<Tienda> tVisitadas;              // Tiendas visitadas por el Cliente
+    private final HashMap<Integer,Producto> productos;  // Productos a comprar
+    private int nVueltas;                               // Veces que hemos recorrido el array de Tiendas
+    private final int MAXVUELTAS;                       // Máximo de vueltas que vamos a dar al array de Tiendas
+    public final FileWriter fichero;                    // FileWriter para escribir los logs
+    public final PrintWriter pw;                        // PrintWriter para escribir los logs
     
     /**
      * Constructor para el cliente. Inicializa las variables y obtiene del Monitor
@@ -53,18 +54,18 @@ public class Cliente {
         */
         Object[] respuesta = mensajeAltaMonitor();
         id = (Integer) respuesta[0];
-        productos = (Productos) respuesta[1];
+        productos = (HashMap) respuesta[1];
         tConocidas = (HashSet) respuesta[2];
         tNoVisitadas = new LinkedList(tConocidas);
         tVisitadas = new LinkedList();
 
         pw.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
                  + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
-                 + "\n PRODUCTOS A COMPRAR: " + productos.toString()+ "\n");
+                 + "\n PRODUCTOS A COMPRAR: " + productos.values().toString()+ "\n");
     }
     
     public void funcionDelCliente() throws IOException{
-        while(!productos.finalizado() && nVueltas < MAXVUELTAS){
+        while(!finalizado() && nVueltas < MAXVUELTAS){
             // Obtenemos la primera tienda de la lista de no visitadas
             if (tNoVisitadas.isEmpty()){
                 tNoVisitadas = tVisitadas;
@@ -74,32 +75,20 @@ public class Cliente {
             }
             Tienda tienda = tNoVisitadas.poll();
             
-            //Me doy de alta en la tienda
-            String respuestaAltaTienda = mensajeAltaTienda(tienda);
-            pw.println("\n  ALTA en la tienda: " + tienda.toString());
-            //Pido catalogo
-            Productos catalogo = mensajeConsultaProductos(tienda);
-            pw.println("    Obtengo productos de la tienda.");
+            // Me doy de alta en la tienda
+            String respuestaAltaTienda = mensajeAltaTienda(tienda, tConocidas);
+            pw.println("\n  ALTA en la tienda: " + tienda.toString2());
             
-            // Compro productos del catalogo
-            for(Map.Entry<Integer, Integer> par : catalogo.getProductos().entrySet()){
-                // Si el producto esta en la lista de la compra
-                if(productos.getProductos().containsKey(par.getKey())){
-                    int cant = productos.getProductos().get(par.getKey()); //par.getValue();
-                    // Si quiero 1 o mas unidades del producto lo compro
-                    if (cant > 0){
-                        // Compro un producto
-                        int respuestaCompraProducto = mensajeCompraProductos(tienda, par.getKey(), cant);
-                        // Resto cuanto he comprado
-                        if (productos.menosProducto(par.getKey(), respuestaCompraProducto) == null)
-                            pw.println("\n\n     ---  ERROR AL RESTAR PRODUCTO --- \n\n");
-                        pw.println("      Compro " + respuestaCompraProducto + " unidades del producto " 
-                                + par.getKey() + ". Faltan " + productos.nProducto(par.getKey()));
-                        
-                    }
-                }
-                // Si no continuamos al siguiente producto
+            // Compro los productos
+            ArrayList<Producto> nuevoProductos = mensajeCompraProductos(tienda, new ArrayList(productos.values()));
+            pw.println("    Compro los productos de la tienda.");
+            
+            for (Producto prod : nuevoProductos) {
+                pw.println("      Compro " + (productos.get(prod.getId()).getCantidad() - prod.getCantidad()) + 
+                        " unidades del producto " + prod.getId() + ". Faltan " + prod.getCantidad());
+                productos.get(prod.getId()).setCantidad(prod.getCantidad());
             }
+
             
             //Pedimos la lista de tiendas conocidas a la tienda
             ArrayList<Tienda> respuestaConsultaTiendas = mensajeConsultaTiendas(tienda);
@@ -116,12 +105,12 @@ public class Cliente {
       
             // Nos damos de baja en la tienda
             String respuestaBajaTienda = mensajeBajaTiendas();
-            pw.println("  BAJA en la tienda " + tienda);
+            pw.println("  BAJA en la tienda: " + tienda.toString2());
             
             // Añadimos la tienda visitada al final de la lista de tiendas visitadas.
             tVisitadas.add(tienda);
         }
-        pw.println("\n\n COMPRA FINALIZADA. PRODUCTOS RESTANTES: " + productos.toString()+ "\n");
+        pw.println("\n\n COMPRA FINALIZADA. PRODUCTOS RESTANTES: " + productos.values().toString()+ "\n");
         fichero.close();
     }
     
@@ -136,26 +125,25 @@ public class Cliente {
         array[0] = (int) (Math.random() * 10000);
         
         // Añadimos los Productos
-        Integer [][] prod = new Integer[3][2];
-        for (int i = 0; i < prod.length; i++) {
-            prod[i][0] = i;
-            prod[i][1] = (int) (1 + (Math.random() * 100));
+        HashMap<Integer,Producto> prods = new HashMap<>();
+        for (int i = 0; i < 5; i++) {
+            prods.put(i, new Producto(i, (int) (1 + (Math.random() * 100))));
         }
-        
-        array[1] = new Productos(prod);
+
+        array[1] = prods;
         
         // Añadimos las Tiendas
         HashSet tiendas = new HashSet();
-        tiendas.add(new Tienda(0, "1.1.1.1", 62, "Mercadona"));
-        tiendas.add(new Tienda(1, "2.2.2.2", 62, "El Corte Inglés"));
-        tiendas.add(new Tienda(1, "3.3.3.3", 62, "LIDL"));
+        tiendas.add(new Tienda(0, "1.1.1.1", 62));
+        tiendas.add(new Tienda(1, "2.2.2.2", 62));
+        tiendas.add(new Tienda(2, "3.3.3.3", 62));
         
         array[2] = tiendas;
         
         return array;
     }
     
-    private String mensajeAltaTienda(Tienda tienda){
+    private String mensajeAltaTienda(Tienda tienda, HashSet<Tienda> tConocidas){
         
         // Mismos pasos iniciales
         // Para darnos de alta en la tienda necesitamos su IP y pedir permiso al monitor
@@ -166,35 +154,25 @@ public class Cliente {
         
     }
     
-    private Productos mensajeConsultaProductos(Tienda tienda){
-        Integer[][] prod = new Integer[2][2];
-        prod[0][0] = 0;
-        prod[0][1] = (int) (Math.random() * 40);
-        if ("Mercadona".equals(tienda.nombre)) {
-            prod[1][0] = 1;
-            prod[1][1] = (int) (Math.random() * 80);
-        } else if ("El Corte Inglés".equals(tienda.nombre)) {
-            prod[1][0] = 2;
-            prod[1][1] = (int) (Math.random() * 60);
-        } else if ("LIDLl".equals(tienda.nombre)) {
-            prod[0][0] = 1;
-            prod[1][0] = 2;
-            prod[1][1] = (int) (Math.random() * 70);
-        }
-        return productos;
-    }
-    
-    private int mensajeCompraProductos(Tienda tienda, int id, int cant){
-        int rand = Integer.MAX_VALUE;
-        while (rand>cant){
-            rand = (int) (Math.random()*20 + 1);
-        }
+    private ArrayList<Producto> mensajeCompraProductos(Tienda tienda, ArrayList<Producto> prod){
+        ArrayList<Producto> res = new ArrayList<>();
+        int random = Integer.MAX_VALUE;
         
-        return rand;
+        for (int i = 0; i < prod.size(); i++) {
+            while (random > prod.get(i).getCantidad()){
+                random = (int) (Math.random() * 20);
+            }
+            res.add(new Producto(i, prod.get(i).getCantidad() - random));
+            
+            random = Integer.MAX_VALUE;
+        }
+
+        return res;
     }
     
+
     private ArrayList<Tienda> mensajeConsultaTiendas(Tienda tienda){
-        ArrayList<Tienda> tiendasSiguientes = new ArrayList<Tienda>();
+        ArrayList<Tienda> tiendasSiguientes = new ArrayList<>();
         // Mismos pasos iniciales de antes
         // Pedimos a la tienda las tiendas que conozca un cliente conociendo su Id
         
@@ -230,5 +208,16 @@ public class Cliente {
      */
     public int getId_interno() {
         return id_interno;
+    }
+    
+    /**
+     * Devuelve si hay algún producto en el HashSet con cantidad distinta de 0.
+     * @return Si quedan productos por comprar o no.
+     */
+    public boolean finalizado(){
+        for(Producto prod : productos.values()) {
+            if (prod.getCantidad() != 0) return false;
+        }
+        return true;
     }
 }

@@ -16,25 +16,26 @@ public class Tienda {
     int id;
     String ip;
     int puerto;
-    String nombre;
     
     /**
      * Constructor para una Tienda. Inicializa los valores de id, ip y puerto.
      * @param id ID de la tienda.
      * @param ip IP de la tienda.
      * @param puerto Puerto de la tienda.
-     * @param nombre Nombre de la tienda.
     */
-    public Tienda(int id, String ip, int puerto, String nombre){
+    public Tienda(int id, String ip, int puerto){
         this.id = id;
         this.ip = ip;
         this.puerto = puerto;
-        this.nombre = nombre;
     }
     
     @Override
     public String toString(){
-        return "Tienda " + id + ": " + nombre + "  -  " + ip + ":" + puerto;
+        return "\n   Tienda " + id + ": " + ip + ":" + puerto;
+    }
+    
+    public String toString2(){
+        return "Tienda " + id + ": " + ip + ":" + puerto;
     }
     
     /**
@@ -55,8 +56,7 @@ public class Tienda {
         return super.equals(that)
             && Objects.equals(this.id, that.id)
             && Objects.equals(this.puerto, that.puerto)
-            && Objects.equals(this.ip, that.ip)
-            && Objects.equals(this.nombre, that.nombre);
+            && Objects.equals(this.ip, that.ip);
     }
 
     @Override
@@ -65,7 +65,6 @@ public class Tienda {
         hash = 37 * hash + this.id;
         hash = 37 * hash + Objects.hashCode(this.ip);
         hash = 37 * hash + this.puerto;
-        hash = 37 * hash + Objects.hashCode(this.nombre);
         return hash;
     }
 }
