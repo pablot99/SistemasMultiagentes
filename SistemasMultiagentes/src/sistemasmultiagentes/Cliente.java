@@ -88,11 +88,12 @@ public class Cliente {
                     if (cant > 0){
                         // Compro un producto
                         int respuestaCompraProducto = mensajeCompraProductos(par.getKey());
-                        pw.println("   Compro " + cant + "unidades del producto " 
-                                + par.getKey() + ". Faltan " + productos.nProducto(par.getKey()));
                         // Resto cuanto he comprado
-                        if (productos.menosProducto(par.getKey(), cant) == null)
+                        if (productos.menosProducto(par.getKey(), respuestaCompraProducto) == null)
                             pw.println("\n\n  ---  ERROR AL RESTAR PRODUCTO --- \n\n");
+                        pw.println("   Compro " + respuestaCompraProducto + "unidades del producto " 
+                                + par.getKey() + ". Faltan " + productos.nProducto(par.getKey()));
+                        
                     }
                 }
                 // Si no continuamos al siguiente producto
