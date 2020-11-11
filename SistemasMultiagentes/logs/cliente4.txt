@@ -1,0 +1,124 @@
+
+ COMPRADOR 4 creado a las 18:39:19.102527300
+
+ ID ASIGNADO: 6348 a las 18:39:19.103528400
+
+ TIENDAS CONOCIDAS: [Tienda 1: El Corte Inglés  -  2.2.2.2:62, Tienda 1: LIDL  -  3.3.3.3:62, Tienda 0: Mercadona  -  1.1.1.1:62]
+
+ PRODUCTOS A COMPRAR: 
+   Producto 0.	Cantidad:94
+   Producto 1.	Cantidad:54
+   Producto 2.	Cantidad:79
+
+
+
+  ALTA en la tienda: Tienda 1: El Corte Inglés  -  2.2.2.2:62
+    Obtengo productos de la tienda.
+      Compro 9 unidades del producto 0. Faltan 85
+      Compro 12 unidades del producto 1. Faltan 42
+      Compro 6 unidades del producto 2. Faltan 73
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 1: El Corte Inglés  -  2.2.2.2:62
+
+  ALTA en la tienda: Tienda 1: LIDL  -  3.3.3.3:62
+    Obtengo productos de la tienda.
+      Compro 12 unidades del producto 0. Faltan 73
+      Compro 5 unidades del producto 1. Faltan 37
+      Compro 10 unidades del producto 2. Faltan 63
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 1: LIDL  -  3.3.3.3:62
+
+  ALTA en la tienda: Tienda 0: Mercadona  -  1.1.1.1:62
+    Obtengo productos de la tienda.
+      Compro 5 unidades del producto 0. Faltan 68
+      Compro 5 unidades del producto 1. Faltan 32
+      Compro 17 unidades del producto 2. Faltan 46
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 0: Mercadona  -  1.1.1.1:62
+
+
+
+  DAMOS OTRA VUELTA A LAS TIENDAS
+
+
+
+  ALTA en la tienda: Tienda 1: El Corte Inglés  -  2.2.2.2:62
+    Obtengo productos de la tienda.
+      Compro 2 unidades del producto 0. Faltan 66
+      Compro 18 unidades del producto 1. Faltan 14
+      Compro 3 unidades del producto 2. Faltan 43
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 1: El Corte Inglés  -  2.2.2.2:62
+
+  ALTA en la tienda: Tienda 1: LIDL  -  3.3.3.3:62
+    Obtengo productos de la tienda.
+      Compro 10 unidades del producto 0. Faltan 56
+      Compro 4 unidades del producto 1. Faltan 10
+      Compro 14 unidades del producto 2. Faltan 29
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 1: LIDL  -  3.3.3.3:62
+
+  ALTA en la tienda: Tienda 0: Mercadona  -  1.1.1.1:62
+    Obtengo productos de la tienda.
+      Compro 7 unidades del producto 0. Faltan 49
+      Compro 6 unidades del producto 1. Faltan 4
+      Compro 11 unidades del producto 2. Faltan 18
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 0: Mercadona  -  1.1.1.1:62
+
+
+
+  DAMOS OTRA VUELTA A LAS TIENDAS
+
+
+
+  ALTA en la tienda: Tienda 1: El Corte Inglés  -  2.2.2.2:62
+    Obtengo productos de la tienda.
+      Compro 7 unidades del producto 0. Faltan 42
+      Compro 3 unidades del producto 1. Faltan 1
+      Compro 7 unidades del producto 2. Faltan 11
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 1: El Corte Inglés  -  2.2.2.2:62
+
+  ALTA en la tienda: Tienda 1: LIDL  -  3.3.3.3:62
+    Obtengo productos de la tienda.
+      Compro 18 unidades del producto 0. Faltan 24
+      Compro 1 unidades del producto 1. Faltan 0
+      Compro 3 unidades del producto 2. Faltan 8
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 1: LIDL  -  3.3.3.3:62
+
+  ALTA en la tienda: Tienda 0: Mercadona  -  1.1.1.1:62
+    Obtengo productos de la tienda.
+      Compro 18 unidades del producto 0. Faltan 6
+      Compro 6 unidades del producto 2. Faltan 2
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 0: Mercadona  -  1.1.1.1:62
+
+
+
+  DAMOS OTRA VUELTA A LAS TIENDAS
+
+
+
+  ALTA en la tienda: Tienda 1: El Corte Inglés  -  2.2.2.2:62
+    Obtengo productos de la tienda.
+      Compro 3 unidades del producto 0. Faltan 3
+      Compro 1 unidades del producto 2. Faltan 1
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 1: El Corte Inglés  -  2.2.2.2:62
+
+  ALTA en la tienda: Tienda 1: LIDL  -  3.3.3.3:62
+    Obtengo productos de la tienda.
+      Compro 3 unidades del producto 0. Faltan 0
+      Compro 1 unidades del producto 2. Faltan 0
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 1: LIDL  -  3.3.3.3:62
+
+
+ COMPRA FINALIZADA. PRODUCTOS RESTANTES: 
+   Producto 0.	Cantidad:0
+   Producto 1.	Cantidad:0
+   Producto 2.	Cantidad:0
+
+

@@ -1,0 +1,57 @@
+
+ COMPRADOR 1 creado a las 18:39:19.095534400
+
+ ID ASIGNADO: 3155 a las 18:39:19.097530700
+
+ TIENDAS CONOCIDAS: [Tienda 1: El Corte Inglés  -  2.2.2.2:62, Tienda 1: LIDL  -  3.3.3.3:62, Tienda 0: Mercadona  -  1.1.1.1:62]
+
+ PRODUCTOS A COMPRAR: 
+   Producto 0.	Cantidad:17
+   Producto 1.	Cantidad:31
+   Producto 2.	Cantidad:24
+
+
+
+  ALTA en la tienda: Tienda 1: El Corte Inglés  -  2.2.2.2:62
+    Obtengo productos de la tienda.
+      Compro 7 unidades del producto 0. Faltan 10
+      Compro 11 unidades del producto 1. Faltan 20
+      Compro 17 unidades del producto 2. Faltan 7
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 1: El Corte Inglés  -  2.2.2.2:62
+
+  ALTA en la tienda: Tienda 1: LIDL  -  3.3.3.3:62
+    Obtengo productos de la tienda.
+      Compro 4 unidades del producto 0. Faltan 6
+      Compro 18 unidades del producto 1. Faltan 2
+      Compro 6 unidades del producto 2. Faltan 1
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 1: LIDL  -  3.3.3.3:62
+
+  ALTA en la tienda: Tienda 0: Mercadona  -  1.1.1.1:62
+    Obtengo productos de la tienda.
+      Compro 6 unidades del producto 0. Faltan 0
+      Compro 1 unidades del producto 1. Faltan 1
+      Compro 1 unidades del producto 2. Faltan 0
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 0: Mercadona  -  1.1.1.1:62
+
+
+
+  DAMOS OTRA VUELTA A LAS TIENDAS
+
+
+
+  ALTA en la tienda: Tienda 1: El Corte Inglés  -  2.2.2.2:62
+    Obtengo productos de la tienda.
+      Compro 1 unidades del producto 1. Faltan 0
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda Tienda 1: El Corte Inglés  -  2.2.2.2:62
+
+
+ COMPRA FINALIZADA. PRODUCTOS RESTANTES: 
+   Producto 0.	Cantidad:0
+   Producto 1.	Cantidad:0
+   Producto 2.	Cantidad:0
+
+

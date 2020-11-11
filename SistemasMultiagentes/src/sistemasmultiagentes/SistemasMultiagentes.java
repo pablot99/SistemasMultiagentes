@@ -61,7 +61,11 @@ public class SistemasMultiagentes {
     }
     
     public static void crearFicheroLog(int n) throws IOException{
-        FileWriter fichero = new FileWriter(".\\logs\\cliente" + n + ".txt");
+        String ruta= ".\\logs";
+        File carpeta=new File(ruta);
+        carpeta.mkdir();
+        File f = new File(ruta+"\\cliente" + n + ".txt");
+        FileWriter fichero = new FileWriter(ruta+"\\cliente" + n + ".txt");
         PrintWriter pw = new PrintWriter(fichero);
         pw.println("\n COMPRADOR " + n + " creado a las " + LocalTime.now() + "\n");
         fichero.close();
