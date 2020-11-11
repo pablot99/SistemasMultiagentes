@@ -59,12 +59,12 @@ public class Cliente {
         tVisitadas = new LinkedList();
 
         pw.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
-                 + " TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
-                 + " PRODUCTOS A COMPRAR: " + productos.toString()+ "\n");
+                 + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
+                 + "\n PRODUCTOS A COMPRAR: " + productos.toString()+ "\n");
     }
     
     public void funcionDelCliente() throws IOException{
-        while(!productos.isEmpty() && nVueltas < MAXVUELTAS){
+        while(!productos.finalizado() && nVueltas < MAXVUELTAS){
             // Obtenemos la primera tienda de la lista de no visitadas
             if (tNoVisitadas.isEmpty()){
                 tNoVisitadas = tVisitadas;
@@ -89,7 +89,7 @@ public class Cliente {
                     // Si quiero 1 o mas unidades del producto lo compro
                     if (cant > 0){
                         // Compro un producto
-                        int respuestaCompraProducto = mensajeCompraProductos(par.getKey());
+                        int respuestaCompraProducto = mensajeCompraProductos(tienda, par.getKey(), cant);
                         // Resto cuanto he comprado
                         if (productos.menosProducto(par.getKey(), respuestaCompraProducto) == null)
                             pw.println("\n\n     ---  ERROR AL RESTAR PRODUCTO --- \n\n");
@@ -121,6 +121,7 @@ public class Cliente {
             // Añadimos la tienda visitada al final de la lista de tiendas visitadas.
             tVisitadas.add(tienda);
         }
+        pw.println("\n\n COMPRA FINALIZADA. PRODUCTOS RESTANTES: " + productos.toString()+ "\n");
         fichero.close();
     }
     
@@ -145,8 +146,9 @@ public class Cliente {
         
         // Añadimos las Tiendas
         HashSet tiendas = new HashSet();
-        tiendas.add(new Tienda(0, "192.168.1.1", 62, "Mercadona"));
-        tiendas.add(new Tienda(1, "192.168.1.2", 62, "El Corte Inglés"));
+        tiendas.add(new Tienda(0, "1.1.1.1", 62, "Mercadona"));
+        tiendas.add(new Tienda(1, "2.2.2.2", 62, "El Corte Inglés"));
+        tiendas.add(new Tienda(1, "3.3.3.3", 62, "LIDL"));
         
         array[2] = tiendas;
         
@@ -165,22 +167,30 @@ public class Cliente {
     }
     
     private Productos mensajeConsultaProductos(Tienda tienda){
-        
-        // Mismos pasos iniciales de antes
-        // Consultamos a la tienda la lista de todos sus productos
-        //File fichero = new File("./project/nbproject/respuestas/RespuestaBajaTiendas.txt");
-        //Productos productos = new Productos(xmlToDom(fichero));
+        Integer[][] prod = new Integer[2][2];
+        prod[0][0] = 0;
+        prod[0][1] = (int) (Math.random() * 40);
+        if ("Mercadona".equals(tienda.nombre)) {
+            prod[1][0] = 1;
+            prod[1][1] = (int) (Math.random() * 80);
+        } else if ("El Corte Inglés".equals(tienda.nombre)) {
+            prod[1][0] = 2;
+            prod[1][1] = (int) (Math.random() * 60);
+        } else if ("LIDLl".equals(tienda.nombre)) {
+            prod[0][0] = 1;
+            prod[1][0] = 2;
+            prod[1][1] = (int) (Math.random() * 70);
+        }
         return productos;
     }
     
-    private int mensajeCompraProductos(int par){
-        int cantidad = 0;
-        // Mismos pasos iniciales de antes
-        // Cuando hayamos consultado los productos que tiene la tienda, le indicamos cuales queremos comprar
-        // (todos los que tengan de nuestra lista)
+    private int mensajeCompraProductos(Tienda tienda, int id, int cant){
+        int rand = Integer.MAX_VALUE;
+        while (rand>cant){
+            rand = (int) (Math.random()*20 + 1);
+        }
         
-        
-        return cantidad;
+        return rand;
     }
     
     private ArrayList<Tienda> mensajeConsultaTiendas(Tienda tienda){

@@ -5,8 +5,8 @@
  */
 package sistemasmultiagentes;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Set;
 import org.w3c.dom.Document;
 
 /**
@@ -92,8 +92,16 @@ public class Productos {
         return productos;
     }
     
-    public boolean isEmpty(){
-        return this.productos.isEmpty();
+    /**
+     * Devuelve si hay algún producto en el HashMap con cantidad distinta de 0.
+     * @return Si quedan productos por comprar o no.
+     */
+    public boolean finalizado(){
+        Collection<Integer> valores = productos.values();
+        for (Integer valor : valores) {
+            if (valor != 0) return false;
+        }
+        return true;
     }
     
 }
