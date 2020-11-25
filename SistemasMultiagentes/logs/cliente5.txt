@@ -1,7 +1,7 @@
 
- COMPRADOR 5 creado a las 13:12:29.195430300
+ COMPRADOR 5 creado a las 19:25:28.580147500
 
- ID ASIGNADO: 6562 a las 13:12:29.195430300
+ ID ASIGNADO: 5409 a las 19:25:28.582142800
 
  TIENDAS CONOCIDAS: [
    Tienda 1: 2.2.2.2:62, 
@@ -9,40 +9,40 @@
    Tienda 2: 3.3.3.3:62]
 
  PRODUCTOS A COMPRAR: [
-   Producto 0, cantidad 100, 
-   Producto 1, cantidad 26, 
-   Producto 2, cantidad 65, 
-   Producto 3, cantidad 59, 
-   Producto 4, cantidad 17]
+   Producto 0, cantidad 95, 
+   Producto 1, cantidad 65, 
+   Producto 2, cantidad 83, 
+   Producto 3, cantidad 8, 
+   Producto 4, cantidad 60]
 
 
   ALTA en la tienda: Tienda 1: 2.2.2.2:62
     Compro los productos de la tienda.
-      Compro 1 unidades del producto 0. Faltan 99
-      Compro 13 unidades del producto 1. Faltan 13
-      Compro 18 unidades del producto 2. Faltan 47
-      Compro 14 unidades del producto 3. Faltan 45
-      Compro 13 unidades del producto 4. Faltan 4
+      Compro 10 unidades del producto 0. Faltan 85
+      Compro 11 unidades del producto 1. Faltan 54
+      Compro 7 unidades del producto 2. Faltan 76
+      Compro 1 unidades del producto 3. Faltan 7
+      Compro 0 unidades del producto 4. Faltan 60
     Consultamos las tiendas conocidas.
   BAJA en la tienda: Tienda 1: 2.2.2.2:62
 
   ALTA en la tienda: Tienda 0: 1.1.1.1:62
     Compro los productos de la tienda.
-      Compro 3 unidades del producto 0. Faltan 96
-      Compro 5 unidades del producto 1. Faltan 8
-      Compro 11 unidades del producto 2. Faltan 36
-      Compro 0 unidades del producto 3. Faltan 45
-      Compro 4 unidades del producto 4. Faltan 0
+      Compro 2 unidades del producto 0. Faltan 83
+      Compro 17 unidades del producto 1. Faltan 37
+      Compro 7 unidades del producto 2. Faltan 69
+      Compro 5 unidades del producto 3. Faltan 2
+      Compro 7 unidades del producto 4. Faltan 53
     Consultamos las tiendas conocidas.
   BAJA en la tienda: Tienda 0: 1.1.1.1:62
 
   ALTA en la tienda: Tienda 2: 3.3.3.3:62
     Compro los productos de la tienda.
-      Compro 7 unidades del producto 0. Faltan 89
-      Compro 0 unidades del producto 1. Faltan 8
-      Compro 8 unidades del producto 2. Faltan 28
-      Compro 15 unidades del producto 3. Faltan 30
-      Compro 0 unidades del producto 4. Faltan 0
+      Compro 7 unidades del producto 0. Faltan 76
+      Compro 11 unidades del producto 1. Faltan 26
+      Compro 6 unidades del producto 2. Faltan 63
+      Compro 0 unidades del producto 3. Faltan 2
+      Compro 6 unidades del producto 4. Faltan 47
     Consultamos las tiendas conocidas.
   BAJA en la tienda: Tienda 2: 3.3.3.3:62
 
@@ -54,101 +54,137 @@
 
   ALTA en la tienda: Tienda 1: 2.2.2.2:62
     Compro los productos de la tienda.
-      Compro 10 unidades del producto 0. Faltan 79
-      Compro 7 unidades del producto 1. Faltan 1
-      Compro 11 unidades del producto 2. Faltan 17
-      Compro 5 unidades del producto 3. Faltan 25
-      Compro 0 unidades del producto 4. Faltan 0
-    Consultamos las tiendas conocidas.
-  BAJA en la tienda: Tienda 1: 2.2.2.2:62
-
-  ALTA en la tienda: Tienda 0: 1.1.1.1:62
-    Compro los productos de la tienda.
-      Compro 16 unidades del producto 0. Faltan 63
-      Compro 1 unidades del producto 1. Faltan 0
-      Compro 1 unidades del producto 2. Faltan 16
-      Compro 5 unidades del producto 3. Faltan 20
-      Compro 0 unidades del producto 4. Faltan 0
-    Consultamos las tiendas conocidas.
-  BAJA en la tienda: Tienda 0: 1.1.1.1:62
-
-  ALTA en la tienda: Tienda 2: 3.3.3.3:62
-    Compro los productos de la tienda.
-      Compro 15 unidades del producto 0. Faltan 48
-      Compro 0 unidades del producto 1. Faltan 0
-      Compro 12 unidades del producto 2. Faltan 4
-      Compro 12 unidades del producto 3. Faltan 8
-      Compro 0 unidades del producto 4. Faltan 0
-    Consultamos las tiendas conocidas.
-  BAJA en la tienda: Tienda 2: 3.3.3.3:62
-
-
-
-  DAMOS OTRA VUELTA A LAS TIENDAS
-
-
-
-  ALTA en la tienda: Tienda 1: 2.2.2.2:62
-    Compro los productos de la tienda.
-      Compro 17 unidades del producto 0. Faltan 31
-      Compro 0 unidades del producto 1. Faltan 0
-      Compro 2 unidades del producto 2. Faltan 2
-      Compro 5 unidades del producto 3. Faltan 3
-      Compro 0 unidades del producto 4. Faltan 0
-    Consultamos las tiendas conocidas.
-  BAJA en la tienda: Tienda 1: 2.2.2.2:62
-
-  ALTA en la tienda: Tienda 0: 1.1.1.1:62
-    Compro los productos de la tienda.
-      Compro 7 unidades del producto 0. Faltan 24
-      Compro 0 unidades del producto 1. Faltan 0
-      Compro 1 unidades del producto 2. Faltan 1
-      Compro 0 unidades del producto 3. Faltan 3
-      Compro 0 unidades del producto 4. Faltan 0
-    Consultamos las tiendas conocidas.
-  BAJA en la tienda: Tienda 0: 1.1.1.1:62
-
-  ALTA en la tienda: Tienda 2: 3.3.3.3:62
-    Compro los productos de la tienda.
-      Compro 14 unidades del producto 0. Faltan 10
-      Compro 0 unidades del producto 1. Faltan 0
-      Compro 1 unidades del producto 2. Faltan 0
-      Compro 1 unidades del producto 3. Faltan 2
-      Compro 0 unidades del producto 4. Faltan 0
-    Consultamos las tiendas conocidas.
-  BAJA en la tienda: Tienda 2: 3.3.3.3:62
-
-
-
-  DAMOS OTRA VUELTA A LAS TIENDAS
-
-
-
-  ALTA en la tienda: Tienda 1: 2.2.2.2:62
-    Compro los productos de la tienda.
-      Compro 8 unidades del producto 0. Faltan 2
-      Compro 0 unidades del producto 1. Faltan 0
-      Compro 0 unidades del producto 2. Faltan 0
+      Compro 3 unidades del producto 0. Faltan 73
+      Compro 16 unidades del producto 1. Faltan 10
+      Compro 2 unidades del producto 2. Faltan 61
       Compro 2 unidades del producto 3. Faltan 0
-      Compro 0 unidades del producto 4. Faltan 0
+      Compro 13 unidades del producto 4. Faltan 34
     Consultamos las tiendas conocidas.
   BAJA en la tienda: Tienda 1: 2.2.2.2:62
 
   ALTA en la tienda: Tienda 0: 1.1.1.1:62
     Compro los productos de la tienda.
-      Compro 0 unidades del producto 0. Faltan 2
-      Compro 0 unidades del producto 1. Faltan 0
-      Compro 0 unidades del producto 2. Faltan 0
+      Compro 13 unidades del producto 0. Faltan 60
+      Compro 9 unidades del producto 1. Faltan 1
+      Compro 2 unidades del producto 2. Faltan 59
       Compro 0 unidades del producto 3. Faltan 0
-      Compro 0 unidades del producto 4. Faltan 0
+      Compro 18 unidades del producto 4. Faltan 16
     Consultamos las tiendas conocidas.
   BAJA en la tienda: Tienda 0: 1.1.1.1:62
 
   ALTA en la tienda: Tienda 2: 3.3.3.3:62
     Compro los productos de la tienda.
-      Compro 0 unidades del producto 0. Faltan 2
+      Compro 4 unidades del producto 0. Faltan 56
+      Compro 0 unidades del producto 1. Faltan 1
+      Compro 12 unidades del producto 2. Faltan 47
+      Compro 0 unidades del producto 3. Faltan 0
+      Compro 11 unidades del producto 4. Faltan 5
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda: Tienda 2: 3.3.3.3:62
+
+
+
+  DAMOS OTRA VUELTA A LAS TIENDAS
+
+
+
+  ALTA en la tienda: Tienda 1: 2.2.2.2:62
+    Compro los productos de la tienda.
+      Compro 10 unidades del producto 0. Faltan 46
+      Compro 1 unidades del producto 1. Faltan 0
+      Compro 3 unidades del producto 2. Faltan 44
+      Compro 0 unidades del producto 3. Faltan 0
+      Compro 4 unidades del producto 4. Faltan 1
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda: Tienda 1: 2.2.2.2:62
+
+  ALTA en la tienda: Tienda 0: 1.1.1.1:62
+    Compro los productos de la tienda.
+      Compro 10 unidades del producto 0. Faltan 36
       Compro 0 unidades del producto 1. Faltan 0
-      Compro 0 unidades del producto 2. Faltan 0
+      Compro 3 unidades del producto 2. Faltan 41
+      Compro 0 unidades del producto 3. Faltan 0
+      Compro 0 unidades del producto 4. Faltan 1
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda: Tienda 0: 1.1.1.1:62
+
+  ALTA en la tienda: Tienda 2: 3.3.3.3:62
+    Compro los productos de la tienda.
+      Compro 19 unidades del producto 0. Faltan 17
+      Compro 0 unidades del producto 1. Faltan 0
+      Compro 4 unidades del producto 2. Faltan 37
+      Compro 0 unidades del producto 3. Faltan 0
+      Compro 0 unidades del producto 4. Faltan 1
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda: Tienda 2: 3.3.3.3:62
+
+
+
+  DAMOS OTRA VUELTA A LAS TIENDAS
+
+
+
+  ALTA en la tienda: Tienda 1: 2.2.2.2:62
+    Compro los productos de la tienda.
+      Compro 6 unidades del producto 0. Faltan 11
+      Compro 0 unidades del producto 1. Faltan 0
+      Compro 3 unidades del producto 2. Faltan 34
+      Compro 0 unidades del producto 3. Faltan 0
+      Compro 0 unidades del producto 4. Faltan 1
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda: Tienda 1: 2.2.2.2:62
+
+  ALTA en la tienda: Tienda 0: 1.1.1.1:62
+    Compro los productos de la tienda.
+      Compro 7 unidades del producto 0. Faltan 4
+      Compro 0 unidades del producto 1. Faltan 0
+      Compro 7 unidades del producto 2. Faltan 27
+      Compro 0 unidades del producto 3. Faltan 0
+      Compro 0 unidades del producto 4. Faltan 1
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda: Tienda 0: 1.1.1.1:62
+
+  ALTA en la tienda: Tienda 2: 3.3.3.3:62
+    Compro los productos de la tienda.
+      Compro 2 unidades del producto 0. Faltan 2
+      Compro 0 unidades del producto 1. Faltan 0
+      Compro 0 unidades del producto 2. Faltan 27
+      Compro 0 unidades del producto 3. Faltan 0
+      Compro 0 unidades del producto 4. Faltan 1
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda: Tienda 2: 3.3.3.3:62
+
+
+
+  DAMOS OTRA VUELTA A LAS TIENDAS
+
+
+
+  ALTA en la tienda: Tienda 1: 2.2.2.2:62
+    Compro los productos de la tienda.
+      Compro 1 unidades del producto 0. Faltan 1
+      Compro 0 unidades del producto 1. Faltan 0
+      Compro 1 unidades del producto 2. Faltan 26
+      Compro 0 unidades del producto 3. Faltan 0
+      Compro 0 unidades del producto 4. Faltan 1
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda: Tienda 1: 2.2.2.2:62
+
+  ALTA en la tienda: Tienda 0: 1.1.1.1:62
+    Compro los productos de la tienda.
+      Compro 0 unidades del producto 0. Faltan 1
+      Compro 0 unidades del producto 1. Faltan 0
+      Compro 15 unidades del producto 2. Faltan 11
+      Compro 0 unidades del producto 3. Faltan 0
+      Compro 1 unidades del producto 4. Faltan 0
+    Consultamos las tiendas conocidas.
+  BAJA en la tienda: Tienda 0: 1.1.1.1:62
+
+  ALTA en la tienda: Tienda 2: 3.3.3.3:62
+    Compro los productos de la tienda.
+      Compro 1 unidades del producto 0. Faltan 0
+      Compro 0 unidades del producto 1. Faltan 0
+      Compro 6 unidades del producto 2. Faltan 5
       Compro 0 unidades del producto 3. Faltan 0
       Compro 0 unidades del producto 4. Faltan 0
     Consultamos las tiendas conocidas.
@@ -162,9 +198,9 @@
 
   ALTA en la tienda: Tienda 1: 2.2.2.2:62
     Compro los productos de la tienda.
-      Compro 2 unidades del producto 0. Faltan 0
+      Compro 0 unidades del producto 0. Faltan 0
       Compro 0 unidades del producto 1. Faltan 0
-      Compro 0 unidades del producto 2. Faltan 0
+      Compro 3 unidades del producto 2. Faltan 2
       Compro 0 unidades del producto 3. Faltan 0
       Compro 0 unidades del producto 4. Faltan 0
     Consultamos las tiendas conocidas.
@@ -174,7 +210,7 @@
  COMPRA FINALIZADA. PRODUCTOS RESTANTES: [
    Producto 0, cantidad 0, 
    Producto 1, cantidad 0, 
-   Producto 2, cantidad 0, 
+   Producto 2, cantidad 2, 
    Producto 3, cantidad 0, 
    Producto 4, cantidad 0]
 

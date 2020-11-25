@@ -26,7 +26,7 @@ public class SistemasMultiagentes {
      */
     public static void main(String[] args) throws IOException {
         
-        int nCompradores = 10;
+        int nCompradores = 1;
         
         ArrayList<Cliente> compradores = new ArrayList<>();
         String ip;

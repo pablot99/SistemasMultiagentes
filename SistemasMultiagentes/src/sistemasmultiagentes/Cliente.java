@@ -45,35 +45,10 @@ public class Cliente {
      * @param id_interno ID interno que utiliza el main para distinguir a cada Cliente
      * @throws java.io.IOException
     */
-    public Cliente(String ip, int id_interno) throws IOException{
-        // Inicializaciones
-        this.id_interno = id_interno;
-        this.ipMonitor = ip;
-        this.fichero = new FileWriter(".\\logs\\cliente" + id_interno + ".txt", true);
-        this.pw = new PrintWriter(fichero);
-        this.nVueltas = 0;
-        this.MAXVUELTAS = 5;
-
-        /* Se pide al monitor el ID, la Lista de Productos y las Tienda
-         * conocidas mediante el mensaje "mensajeAltaMonitor()".
-        */
-        Object[] respuesta = mensajeAltaMonitor();
-        id = (Integer) respuesta[0];
-        productos = (HashMap) respuesta[1];
-        tConocidas = (HashSet) respuesta[2];
-        tNoVisitadas = new LinkedList(tConocidas);
-        tVisitadas = new LinkedList();
-
-        pw.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
-                 + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
-                 + "\n PRODUCTOS A COMPRAR: " + productos.values().toString()+ "\n");
-    }
-    
-//        public Cliente(String ip, int id_interno) throws IOException{
+//    public Cliente(String ip, int id_interno) throws IOException{
 //        // Inicializaciones
 //        this.id_interno = id_interno;
 //        this.ipMonitor = ip;
-//        getHTTP(ip+":puerto", query) 
 //        this.fichero = new FileWriter(".\\logs\\cliente" + id_interno + ".txt", true);
 //        this.pw = new PrintWriter(fichero);
 //        this.nVueltas = 0;
@@ -92,8 +67,33 @@ public class Cliente {
 //        pw.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
 //                 + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
 //                 + "\n PRODUCTOS A COMPRAR: " + productos.values().toString()+ "\n");
-    
 //    }
+    
+        public Cliente(String ip, int id_interno) throws IOException{
+        // Inicializaciones
+        this.id_interno = id_interno;
+        this.ipMonitor = ip;
+        String resp = getHTTP(ip, "crearCliente=True");
+        System.out.println(resp);
+        this.fichero = new FileWriter(".\\logs\\cliente" + id_interno + ".txt", true);
+        this.pw = new PrintWriter(fichero);
+        this.nVueltas = 0;
+        this.MAXVUELTAS = 5;
+
+        /* Se pide al monitor el ID, la Lista de Productos y las Tienda
+         * conocidas mediante el mensaje "mensajeAltaMonitor()".
+        */
+        Object[] respuesta = mensajeAltaMonitor();
+        id = (Integer) respuesta[0];
+        productos = (HashMap) respuesta[1];
+        tConocidas = (HashSet) respuesta[2];
+        tNoVisitadas = new LinkedList(tConocidas);
+        tVisitadas = new LinkedList();
+
+        pw.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
+                 + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
+                 + "\n PRODUCTOS A COMPRAR: " + productos.values().toString()+ "\n");   
+    }
     
     public void funcionDelCliente() throws IOException{
         while(!finalizado() && nVueltas < MAXVUELTAS){
@@ -254,7 +254,7 @@ public class Cliente {
     }
     
     public String getHTTP(String URL, String query) throws MalformedURLException, IOException{
-        URL url = new URL(URL);
+        URL url = new URL(URL+"/?"+query);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         // Set timeout as per needs
@@ -269,15 +269,17 @@ public class Cliente {
         connection.setRequestMethod("GET");
 
         // Set Headers
-        connection.setRequestProperty("Accept", "application/xml");
         connection.setRequestProperty("Content-Type", "application/xml");
+        
+//connection.setRequestProperty("Content-Type", "application/xml");
+
 
         // Write XML
-        OutputStream outputStream = connection.getOutputStream();
-        byte[] b = query.getBytes("UTF-8");
-        outputStream.write(b);
-        outputStream.flush();
-        outputStream.close();
+//        OutputStream outputStream = connection.getOutputStream();
+//        byte[] b = query.getBytes("UTF-8");
+//        outputStream.write(b);
+//        outputStream.flush();
+//        outputStream.close();
 
         // Read XML
         InputStream inputStream = connection.getInputStream();
