@@ -8,7 +8,12 @@ package sistemasmultiagentes;
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -64,6 +69,32 @@ public class Cliente {
                  + "\n PRODUCTOS A COMPRAR: " + productos.values().toString()+ "\n");
     }
     
+//        public Cliente(String ip, int id_interno) throws IOException{
+//        // Inicializaciones
+//        this.id_interno = id_interno;
+//        this.ipMonitor = ip;
+//        getHTTP(ip+":puerto", query) 
+//        this.fichero = new FileWriter(".\\logs\\cliente" + id_interno + ".txt", true);
+//        this.pw = new PrintWriter(fichero);
+//        this.nVueltas = 0;
+//        this.MAXVUELTAS = 5;
+//
+//        /* Se pide al monitor el ID, la Lista de Productos y las Tienda
+//         * conocidas mediante el mensaje "mensajeAltaMonitor()".
+//        */
+//        Object[] respuesta = mensajeAltaMonitor();
+//        id = (Integer) respuesta[0];
+//        productos = (HashMap) respuesta[1];
+//        tConocidas = (HashSet) respuesta[2];
+//        tNoVisitadas = new LinkedList(tConocidas);
+//        tVisitadas = new LinkedList();
+//
+//        pw.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
+//                 + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
+//                 + "\n PRODUCTOS A COMPRAR: " + productos.values().toString()+ "\n");
+    
+//    }
+    
     public void funcionDelCliente() throws IOException{
         while(!finalizado() && nVueltas < MAXVUELTAS){
             // Obtenemos la primera tienda de la lista de no visitadas
@@ -104,8 +135,9 @@ public class Cliente {
             }
       
             // Nos damos de baja en la tienda
-            String respuestaBajaTienda = mensajeBajaTiendas();
+            String respuestaBajaTienda = postHTTP("Me doy de baja en la tienda", "http://localhost:8500/example");
             pw.println("  BAJA en la tienda: " + tienda.toString2());
+            
             
             // Añadimos la tienda visitada al final de la lista de tiendas visitadas.
             tVisitadas.add(tienda);
@@ -219,5 +251,85 @@ public class Cliente {
             if (prod.getCantidad() != 0) return false;
         }
         return true;
+    }
+    
+    public String getHTTP(String URL, String query) throws MalformedURLException, IOException{
+        URL url = new URL(URL);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        // Set timeout as per needs
+        connection.setConnectTimeout(20000);
+        connection.setReadTimeout(20000);
+
+        // Set DoOutput to true if you want to use URLConnection for output.
+        // Default is false
+        connection.setDoOutput(true);
+
+        connection.setUseCaches(true);
+        connection.setRequestMethod("GET");
+
+        // Set Headers
+        connection.setRequestProperty("Accept", "application/xml");
+        connection.setRequestProperty("Content-Type", "application/xml");
+
+        // Write XML
+        OutputStream outputStream = connection.getOutputStream();
+        byte[] b = query.getBytes("UTF-8");
+        outputStream.write(b);
+        outputStream.flush();
+        outputStream.close();
+
+        // Read XML
+        InputStream inputStream = connection.getInputStream();
+        byte[] res = new byte[2048];
+        int i = 0;
+        StringBuilder response = new StringBuilder();
+        while ((i = inputStream.read(res)) != -1) {
+            response.append(new String(res, 0, i));
+        }
+        inputStream.close();
+
+        System.out.println("Response= " + response.toString());
+        return response.toString();
+    }
+    
+        public String postHTTP(String mensaje, String URL) throws MalformedURLException, IOException{
+        URL url = new URL(URL);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        // Set timeout as per needs
+        connection.setConnectTimeout(20000);
+        connection.setReadTimeout(20000);
+
+        // Set DoOutput to true if you want to use URLConnection for output.
+        // Default is false
+        connection.setDoOutput(true);
+
+        connection.setUseCaches(true);
+        connection.setRequestMethod("POST");
+
+        // Set Headers
+        connection.setRequestProperty("Accept", "application/xml");
+        connection.setRequestProperty("Content-Type", "application/xml");
+
+        // Write XML
+        OutputStream outputStream = connection.getOutputStream();
+        byte[] b = mensaje.getBytes("UTF-8");
+        outputStream.write(b);
+        outputStream.flush();
+        outputStream.close();
+
+        // Read XML
+        InputStream inputStream = connection.getInputStream();
+        byte[] res = new byte[2048];
+        int i = 0;
+        StringBuilder response = new StringBuilder();
+        while ((i = inputStream.read(res)) != -1) {
+            response.append(new String(res, 0, i));
+        }
+        inputStream.close();
+
+        System.out.println("Response= " + response.toString());
+        return response.toString();
     }
 }

@@ -49,6 +49,7 @@ public class SistemasMultiagentes {
                         comprador.funcionDelCliente();
                     } catch (Exception ex) {
                         try {
+                            System.out.println(ex.toString());
                             System.out.println("  EXCEPCIÓN EN CLIENTE " + comprador.getId_interno());
                             comprador.pw.println("\n\n\n  EXCEPCIÓN EN CLIENTE " + comprador.getId_interno());
                             comprador.fichero.close();
