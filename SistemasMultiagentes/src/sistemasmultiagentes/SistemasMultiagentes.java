@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author pablo
+ * @author Grupo 2
  */
 public class SistemasMultiagentes {
 
