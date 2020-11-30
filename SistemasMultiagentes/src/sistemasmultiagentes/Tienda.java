@@ -38,6 +38,18 @@ public class Tienda {
         return "Tienda " + id + ": " + ip + ":" + puerto;
     }
     
+    public int getId(){
+        return this.id;
+    }
+    
+    public String getIp(){
+        return this.ip;
+    }
+    
+    public int getPuerto(){
+        return this.puerto;
+    }
+    
     /**
      *
      * @param o Objeto a comparar.
