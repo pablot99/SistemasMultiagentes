@@ -25,26 +25,28 @@ import java.util.Map;
  * @author bitde
  */
 public class Cliente {
-    
+
     private final int id_interno;                       // ID interno del Cliente (el número de cliente en el main)
     private final int id;                               // ID del Cliente
     private final String ipMonitor;                     // IP del Monitor
     private final HashSet<Tienda> tConocidas;           // Tiendas conocidas por el Cliente
     private LinkedList<Tienda> tNoVisitadas;            // Tiendas visitadas por el Cliente
     private LinkedList<Tienda> tVisitadas;              // Tiendas visitadas por el Cliente
-    private final HashMap<Integer,Producto> productos;  // Productos a comprar
+    private final HashMap<Integer, Producto> productos;  // Productos a comprar
     private int nVueltas;                               // Veces que hemos recorrido el array de Tiendas
     private final int MAXVUELTAS;                       // Máximo de vueltas que vamos a dar al array de Tiendas
     public final FileWriter fichero;                    // FileWriter para escribir los logs
     public final PrintWriter pw;                        // PrintWriter para escribir los logs
-    
+
     /**
-     * Constructor para el cliente. Inicializa las variables y obtiene del Monitor
-     * el ID del Cliente, la Lista de Productos y 2 Tienda conocidas.
+     * Constructor para el cliente. Inicializa las variables y obtiene del
+     * Monitor el ID del Cliente, la Lista de Productos y 2 Tienda conocidas.
+     *
      * @param ip IP del Monitor
-     * @param id_interno ID interno que utiliza el main para distinguir a cada Cliente
+     * @param id_interno ID interno que utiliza el main para distinguir a cada
+     * Cliente
      * @throws java.io.IOException
-    */
+     */
 //    public Cliente(String ip, int id_interno) throws IOException{
 //        // Inicializaciones
 //        this.id_interno = id_interno;
@@ -68,8 +70,7 @@ public class Cliente {
 //                 + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
 //                 + "\n PRODUCTOS A COMPRAR: " + productos.values().toString()+ "\n");
 //    }
-    
-        public Cliente(String ip, int id_interno) throws IOException{
+    public Cliente(String ip, int id_interno) throws IOException {
         // Inicializaciones
         this.id_interno = id_interno;
         this.ipMonitor = ip;
@@ -82,7 +83,7 @@ public class Cliente {
 
         /* Se pide al monitor el ID, la Lista de Productos y las Tienda
          * conocidas mediante el mensaje "mensajeAltaMonitor()".
-        */
+         */
         Object[] respuesta = mensajeAltaMonitor();
         id = (Integer) respuesta[0];
         productos = (HashMap) respuesta[1];
@@ -91,36 +92,35 @@ public class Cliente {
         tVisitadas = new LinkedList();
 
         pw.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
-                 + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
-                 + "\n PRODUCTOS A COMPRAR: " + productos.values().toString()+ "\n");   
+                + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
+                + "\n PRODUCTOS A COMPRAR: " + productos.values().toString() + "\n");
     }
-    
-    public void funcionDelCliente() throws IOException{
-        while(!finalizado() && nVueltas < MAXVUELTAS){
+
+    public void funcionDelCliente() throws IOException {
+        while (!finalizado() && nVueltas < MAXVUELTAS) {
             // Obtenemos la primera tienda de la lista de no visitadas
-            if (tNoVisitadas.isEmpty()){
+            if (tNoVisitadas.isEmpty()) {
                 tNoVisitadas = tVisitadas;
                 tVisitadas = new LinkedList<>();
-                nVueltas ++;
+                nVueltas++;
                 pw.println("\n\n\n  DAMOS OTRA VUELTA A LAS TIENDAS\n\n");
             }
             Tienda tienda = tNoVisitadas.poll();
-            
+
             // Me doy de alta en la tienda
             String respuestaAltaTienda = mensajeAltaTienda(tienda, tConocidas);
             pw.println("\n  ALTA en la tienda: " + tienda.toString2());
-            
+
             // Compro los productos
             ArrayList<Producto> nuevoProductos = mensajeCompraProductos(tienda, new ArrayList(productos.values()));
             pw.println("    Compro los productos de la tienda.");
-            
+
             for (Producto prod : nuevoProductos) {
-                pw.println("      Compro " + (productos.get(prod.getId()).getCantidad() - prod.getCantidad()) + 
-                        " unidades del producto " + prod.getId() + ". Faltan " + prod.getCantidad());
+                pw.println("      Compro " + (productos.get(prod.getId()).getCantidad() - prod.getCantidad())
+                        + " unidades del producto " + prod.getId() + ". Faltan " + prod.getCantidad());
                 productos.get(prod.getId()).setCantidad(prod.getCantidad());
             }
 
-            
             //Pedimos la lista de tiendas conocidas a la tienda
             ArrayList<Tienda> respuestaConsultaTiendas = mensajeConsultaTiendas(tienda);
             pw.println("    Consultamos las tiendas conocidas.");
@@ -133,93 +133,88 @@ public class Cliente {
                     pw.println("      Nueva tienda: " + respuesta);
                 }
             }
-      
+
             // Nos damos de baja en la tienda
             String respuestaBajaTienda = postHTTP("Me doy de baja en la tienda", "http://localhost:8500/example");
             pw.println("  BAJA en la tienda: " + tienda.toString2());
-            
-            
+
             // Añadimos la tienda visitada al final de la lista de tiendas visitadas.
             tVisitadas.add(tienda);
         }
-        pw.println("\n\n COMPRA FINALIZADA. PRODUCTOS RESTANTES: " + productos.values().toString()+ "\n");
+        pw.println("\n\n COMPRA FINALIZADA. PRODUCTOS RESTANTES: " + productos.values().toString() + "\n");
         fichero.close();
     }
-    
-    
+
     // como aún no podemos recibir mensajes de la tienda, leemos de un fichero de texto
     // mensajes que hemos escrito
-    
-    private Object[] mensajeAltaMonitor(){
+    private Object[] mensajeAltaMonitor() {
         Object[] array = new Object[3];
-        
+
         // Añadimos el ID
         array[0] = (int) (Math.random() * 10000);
-        
+
         // Añadimos los Productos
-        HashMap<Integer,Producto> prods = new HashMap<>();
+        HashMap<Integer, Producto> prods = new HashMap<>();
         for (int i = 0; i < 5; i++) {
             prods.put(i, new Producto(i, (int) (1 + (Math.random() * 100))));
         }
 
         array[1] = prods;
-        
+
         // Añadimos las Tiendas
         HashSet tiendas = new HashSet();
         tiendas.add(new Tienda(0, "1.1.1.1", 62));
         tiendas.add(new Tienda(1, "2.2.2.2", 62));
         tiendas.add(new Tienda(2, "3.3.3.3", 62));
-        
+
         array[2] = tiendas;
-        
+
         return array;
     }
-    
-    private String mensajeAltaTienda(Tienda tienda, HashSet<Tienda> tConocidas){
-        
+
+    private String mensajeAltaTienda(Tienda tienda, HashSet<Tienda> tConocidas) {
+
         // Mismos pasos iniciales
         // Para darnos de alta en la tienda necesitamos su IP y pedir permiso al monitor
         // Recibiremos un mensaje de la tienda que nos indique que nos hemos dado de alta correctamente
-        
         String respuesta = "Se ha dado de alta correctamente";
         return respuesta;
-        
+
     }
-    
-    private ArrayList<Producto> mensajeCompraProductos(Tienda tienda, ArrayList<Producto> prod){
+
+    private ArrayList<Producto> mensajeCompraProductos(Tienda tienda, ArrayList<Producto> prod) {
         ArrayList<Producto> res = new ArrayList<>();
         int random = Integer.MAX_VALUE;
-        
+
         for (int i = 0; i < prod.size(); i++) {
-            while (random > prod.get(i).getCantidad()){
+            while (random > prod.get(i).getCantidad()) {
                 random = (int) (Math.random() * 20);
             }
             res.add(new Producto(i, prod.get(i).getCantidad() - random));
-            
+
             random = Integer.MAX_VALUE;
         }
 
         return res;
     }
-    
 
-    private ArrayList<Tienda> mensajeConsultaTiendas(Tienda tienda){
+    private ArrayList<Tienda> mensajeConsultaTiendas(Tienda tienda) {
         ArrayList<Tienda> tiendasSiguientes = new ArrayList<>();
         // Mismos pasos iniciales de antes
         // Pedimos a la tienda las tiendas que conozca un cliente conociendo su Id
-        
+
         return tiendasSiguientes;
     }
-    
-    private String mensajeBajaTiendas(){
+
+    private String mensajeBajaTiendas() {
         String respuesta = "Se ha dado de baja correctamente";
         // Mismos pasos iniciales
         // Para darnos de baja en la tienda necesitamos su IP y pedir permiso al monitor
         // Recibiremos un mensaje de la tienda que nos indique que nos hemos dado de baja correctamente
-        
+
         return respuesta;
     }
-    
+
     /*
     private Document xmlToDom(File f){
         try {
@@ -233,28 +228,30 @@ public class Cliente {
             return null;
         }
     }
-    */
-
+     */
     /**
      * @return the id_interno
      */
     public int getId_interno() {
         return id_interno;
     }
-    
+
     /**
      * Devuelve si hay algún producto en el HashSet con cantidad distinta de 0.
+     *
      * @return Si quedan productos por comprar o no.
      */
-    public boolean finalizado(){
-        for(Producto prod : productos.values()) {
-            if (prod.getCantidad() != 0) return false;
+    public boolean finalizado() {
+        for (Producto prod : productos.values()) {
+            if (prod.getCantidad() != 0) {
+                return false;
+            }
         }
         return true;
     }
-    
-    public String getHTTP(String URL, String query) throws MalformedURLException, IOException{
-        URL url = new URL(URL+"/?"+query);
+
+    private String getHTTP(String URL, String query) throws MalformedURLException, IOException {
+        URL url = new URL(URL + "/?" + query);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         // Set timeout as per needs
@@ -270,17 +267,14 @@ public class Cliente {
 
         // Set Headers
         connection.setRequestProperty("Content-Type", "application/xml");
-        
+
 //connection.setRequestProperty("Content-Type", "application/xml");
-
-
         // Write XML
 //        OutputStream outputStream = connection.getOutputStream();
 //        byte[] b = query.getBytes("UTF-8");
 //        outputStream.write(b);
 //        outputStream.flush();
 //        outputStream.close();
-
         // Read XML
         InputStream inputStream = connection.getInputStream();
         byte[] res = new byte[2048];
@@ -294,8 +288,8 @@ public class Cliente {
         System.out.println("Response= " + response.toString());
         return response.toString();
     }
-    
-        public String postHTTP(String mensaje, String URL) throws MalformedURLException, IOException{
+
+    private String postHTTP(String mensaje, String URL) throws MalformedURLException, IOException {
         URL url = new URL(URL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
