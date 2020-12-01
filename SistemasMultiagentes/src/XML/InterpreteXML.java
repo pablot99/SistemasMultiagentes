@@ -286,7 +286,7 @@ public class InterpreteXML {
         padre.appendChild(e);
     }
     
-    private boolean validateSchema(String XML){
+    public boolean validateSchema(String XML){
         try {
             SchemaFactory factory = 
                     SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);

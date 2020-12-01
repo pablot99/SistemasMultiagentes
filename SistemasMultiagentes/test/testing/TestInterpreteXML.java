@@ -28,6 +28,7 @@ public class TestInterpreteXML {
         
         try {
             testLeeAltaMonitor(interprete);
+            testEscribeAltaTienda(interprete);
             testLeeCompra(interprete);
         } catch (IOException ex) {
             Logger.getLogger(TestInterpreteXML.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,6 +54,23 @@ public class TestInterpreteXML {
         System.out.println("Tiendas:\n");
         System.out.println(tiendas);
         System.out.println("\n");
+    }
+    
+    static void testEscribeAltaTienda(InterpreteXML interprete){
+        System.out.println("-----------    TEST ESCRIBE ALTA TIENDA    -----------\n");
+        int id_c=1;
+        Tienda t = new Tienda(0, "192.168.1.1", 8080);
+        HashMap<Integer, Producto> p = new HashMap<>();
+        Producto p1 = new Producto(1, 50);
+        p.put(1, p1);
+        Producto p2 = new Producto(2,100);
+        p.put(2, p2);
+        String result = interprete.escribeAltaTienda(id_c, t, p);
+        System.out.println(result);
+        if(interprete.validateSchema(result))
+            System.out.println("ESQUEMA VALIDADO");
+        else
+            System.out.println("EL ESQUEMA NO VALIDA");
     }
     
     static void testLeeCompra(InterpreteXML interprete) throws FileNotFoundException, IOException{
