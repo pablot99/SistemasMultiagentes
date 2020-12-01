@@ -191,16 +191,16 @@ public class InterpreteXML {
     }
 
     public ArrayList<Tienda> leeTiendasConocidas(String XML){
-        ArrayList<Tienda> t = new ArrayList<>();
+        ArrayList<Tienda> tiendas = new ArrayList<>();
         if(validateSchema(XML)){
             //convertimos string a DOM
             Document doc = convertStringToXMLDocument(XML);
 
             //Obtenemos la lista de tiendas
-            HashSet<Tienda> tiendas = new HashSet<>();
+            //HashSet<Tienda> tiendas = new HashSet<>();
             NodeList t = doc.getElementsByTagName("tienda");
-            for(int i=0; i<p.getLength();i++){
-                Node iNode = p.item(i);
+            for(int i=0; i<t.getLength();i++){
+                Node iNode = t.item(i);
                 if (iNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element iElement = (Element) iNode;
                     int id_t= Integer.parseInt(iElement.getElementsByTagName("id_tienda").item(0).getTextContent());
@@ -209,13 +209,13 @@ public class InterpreteXML {
                     tiendas.add(new Tienda(id_t, ip_t, puerto_t));
                 } 
             }
-            t = tiendas;
+            //t = tiendas;
         }
         else{
-            t = null;
+            tiendas = null;
         }
         
-        return t;
+        return tiendas;
     }
 
 
