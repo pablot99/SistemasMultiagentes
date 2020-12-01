@@ -156,7 +156,7 @@ public class InterpreteXML {
     }
     
     
-    public String consultaTiendas(int id_c, Tienda t, ArrayList<Tienda> tiendas){
+    public String escribeConsultaTiendas(int id_c, Tienda t, ArrayList<Tienda> tiendas){
         try {
             DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
@@ -175,11 +175,11 @@ public class InterpreteXML {
                     Element lP = document.createElement("lista_tiendas");
                     body.appendChild(lP);
                         //elementos producto
-                        for (i = 0; i < tiendas.size(); i++) {
+                        for (int i = 0; i < tiendas.size(); i++) {
                             Element tiend = document.createElement("tienda");
                             lP.appendChild(tiend);
                             addNodoTexto(document, tiend, "id_tienda", Integer.toString(tiendas.get(i).getId()));
-                            addNodoTexto(document, tiend, "ip_tienda", Integer.toString(tiendas.get(i).getIp()));
+                            addNodoTexto(document, tiend, "ip_tienda", tiendas.get(i).getIp());
                             addNodoTexto(document, tiend, "puerto", Integer.toString(tiendas.get(i).getPuerto()));
                         }
             return getStringFromDocument(document);
