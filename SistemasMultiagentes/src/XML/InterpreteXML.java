@@ -129,29 +129,30 @@ public class InterpreteXML {
     }
     
     public ArrayList<Producto> leeCompra(String XML){
+        ArrayList<Producto> p;
         if(validateSchema(XML)){
             //convertimos string a DOM
             Document doc = convertStringToXMLDocument(XML);
             
             //Obtenemos la lista de productos
             NodeList productos = doc.getElementsByTagName("producto");
-            HashMap<Integer, Producto> productos = new HashMap<>();
+            p = new ArrayList<>();
             for(int i=0; i<productos.getLength();i++){
                 Node iNode = productos.item(i);
                 if (iNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element iElement = (Element) iNode;
                     int id_p= Integer.parseInt(iElement.getElementsByTagName("id_producto").item(0).getTextContent());
                     int cant_p= Integer.parseInt(iElement.getElementsByTagName("cantidad").item(0).getTextContent());
-                    productos.put(id_p, new Producto(id_p, cant_p));
+                    p.add(new Producto(id_p, cant_p));
                 } 
             }
   
         }
         else{
-            productos = null;
+            p = null;
         }
         
-        return productos;
+        return p;
     }
     
     
