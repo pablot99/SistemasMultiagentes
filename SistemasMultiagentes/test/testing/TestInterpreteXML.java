@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.logging.Level;
@@ -27,6 +28,7 @@ public class TestInterpreteXML {
         
         try {
             testLeeAltaMonitor(interprete);
+            testLeeCompra(interprete);
         } catch (IOException ex) {
             Logger.getLogger(TestInterpreteXML.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -34,7 +36,7 @@ public class TestInterpreteXML {
     }
     
     static void testLeeAltaMonitor(InterpreteXML interprete) throws FileNotFoundException, IOException{
-        
+        System.out.println("-----------    TEST LEE ALTA MONITOR    -----------\n");
         String cadena=fileToString(".\\test\\XMLinput\\reg_cliente.xml");
         System.out.println("Mensaje: " + cadena);
         Object[] o;
@@ -51,6 +53,16 @@ public class TestInterpreteXML {
         System.out.println("Tiendas:\n");
         System.out.println(tiendas);
         System.out.println("\n");
+    }
+    
+    static void testLeeCompra(InterpreteXML interprete) throws FileNotFoundException, IOException{
+        System.out.println("-----------    TEST LEE COMPRA    -----------\n");
+        String cadena=fileToString(".\\test\\XMLinput\\confirmacion_compra.xml");
+        System.out.println("Mensaje: " + cadena);
+        ArrayList<Producto> productos= interprete.leeCompra(cadena);
+        //imprimimos los productos
+        System.out.println("Productos: \n");
+        System.out.println(productos);
     }
     
     static String fileToString(String ruta) throws FileNotFoundException, IOException{
