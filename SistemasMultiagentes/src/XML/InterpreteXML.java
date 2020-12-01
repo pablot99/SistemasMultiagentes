@@ -130,27 +130,117 @@ public class InterpreteXML {
     
     public ArrayList<Producto> leeCompra(String XML){
         if(validateSchema(XML)){
+            //convertimos string a DOM
+            Document doc = convertStringToXMLDocument(XML);
             
+            //Obtenemos la lista de productos
+            NodeList productos = doc.getElementsByTagName("producto");
+            HashMap<Integer, Producto> productos = new HashMap<>();
+            for(int i=0; i<productos.getLength();i++){
+                Node iNode = productos.item(i);
+                if (iNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element iElement = (Element) iNode;
+                    int id_p= Integer.parseInt(iElement.getElementsByTagName("id_producto").item(0).getTextContent());
+                    int cant_p= Integer.parseInt(iElement.getElementsByTagName("cantidad").item(0).getTextContent());
+                    productos.put(id_p, new Producto(id_p, cant_p));
+                } 
+            }
+  
         }
         else{
-            
+            productos = null;
         }
-        return null;
+        
+        return productos;
     }
     
-    public String escribeBajaTienda(int id_c, Tienda t){
-        return null;
-    }
     
+    public String consultaTiendas(int id_c, Tienda t, ArrayList<Tienda> tiendas){
+        try {
+            DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
+            Document document = documentBuilder.newDocument();
+            //elemento root 
+            Element root = document.createElement("root");
+            root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            document.appendChild(root);
+                //elemento head
+                creaHead(document, root, "solicitar_tiendas", id_c, t);
+                //elemento body
+                Element body = document.createElement("body");
+                body.setAttribute("xsi:type", "solicitar_tiendas");
+                root.appendChild(body);
+                    //elemento lista_productos
+                    Element lP = document.createElement("lista_tiendas");
+                    body.appendChild(lP);
+                        //elementos producto
+                        for (i = 0; i < tiendas.size(); i++) {
+                            Element tiend = document.createElement("tienda");
+                            lP.appendChild(tiend);
+                            addNodoTexto(document, tiend, "id_tienda", Integer.toString(tiendas.get(i).getId()));
+                            addNodoTexto(document, tiend, "ip_tienda", Integer.toString(tiendas.get(i).getIp()));
+                            addNodoTexto(document, tiend, "puerto", Integer.toString(tiendas.get(i).getPuerto()));
+                        }
+            return getStringFromDocument(document);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(InterpreteXML.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+
+    }
+
     public ArrayList<Tienda> leeTiendasConocidas(String XML){
+        ArrayList<Tienda> t = new ArrayList<>();
         if(validateSchema(XML)){
-            
+            //convertimos string a DOM
+            Document doc = convertStringToXMLDocument(XML);
+
+            //Obtenemos la lista de tiendas
+            HashSet<Tienda> tiendas = new HashSet<>();
+            NodeList t = doc.getElementsByTagName("tienda");
+            for(int i=0; i<p.getLength();i++){
+                Node iNode = p.item(i);
+                if (iNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element iElement = (Element) iNode;
+                    int id_t= Integer.parseInt(iElement.getElementsByTagName("id_tienda").item(0).getTextContent());
+                    String ip_t= iElement.getElementsByTagName("ip_tienda").item(0).getTextContent();
+                    int puerto_t= Integer.parseInt(iElement.getElementsByTagName("puerto").item(0).getTextContent());
+                    tiendas.add(new Tienda(id_t, ip_t, puerto_t));
+                } 
+            }
+            t = tiendas;
         }
         else{
-            
+            t = null;
         }
-        return null;
+        
+        return t;
     }
+
+
+    public String escribeBajaTienda(int id_c, Tienda t){
+        try {
+            DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
+            Document document = documentBuilder.newDocument();
+            //elemento root 
+            Element root = document.createElement("root");
+            root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            document.appendChild(root);
+                //elemento head
+                creaHead(document, root, "baja_tienda", id_c, t);
+                //elemento body
+                Element body = document.createElement("body");
+                body.setAttribute("xsi:type", "salida_tienda");
+                root.appendChild(body);
+                  
+            return getStringFromDocument(document);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(InterpreteXML.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
     
     //crea el elemento head con su formato correcto y lo anade al elemento root
     private void creaHead(Document document, Element root, String tipo_mensaje, int id_c, Tienda t){
