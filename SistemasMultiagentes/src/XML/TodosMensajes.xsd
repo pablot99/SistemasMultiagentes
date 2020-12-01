@@ -1,8 +1,6 @@
-<!-- Autor: Carlos Morote García -->
-
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
+<!-- Autor: Carlos Morote García -->
     <!-- TODO: Revisar -->
     <!-- Todos los tipos de mensajes -->
     <xs:simpleType name="tipoMensaje">

@@ -53,11 +53,10 @@ public class InterpreteXML {
     }
     
     public Object[] leeAltaMonitor(String XML){
-        Object[] r = null;
+        Object[] r = new Object[3];
         if(validateSchema(XML)){
             //convertimos string a DOM
             Document doc = convertStringToXMLDocument(XML);
-            //Obtenemos nuestro id
             String s_id= doc.getElementsByTagName("id_receptor").item(0).getTextContent();
             int id = Integer.parseInt(s_id);
             r[0]=id;
@@ -77,11 +76,11 @@ public class InterpreteXML {
             //Obtenemos la lista de tiendas
             HashSet<Tienda> tiendas = new HashSet<>();
             NodeList t = doc.getElementsByTagName("tienda");
-            for(int i=0; i<p.getLength();i++){
-                Node iNode = p.item(i);
+            for(int i=0; i<t.getLength();i++){
+                Node iNode = t.item(i);
                 if (iNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element iElement = (Element) iNode;
-                    int id_t= Integer.parseInt(iElement.getElementsByTagName("id_tienda").item(0).getTextContent());
+                    int id_t = Integer.parseInt(iElement.getElementsByTagName("id_tienda").item(0).getTextContent());
                     String ip_t= iElement.getElementsByTagName("ip_tienda").item(0).getTextContent();
                     int puerto_t= Integer.parseInt(iElement.getElementsByTagName("puerto").item(0).getTextContent());
                     tiendas.add(new Tienda(id_t, ip_t, puerto_t));
@@ -296,6 +295,7 @@ public class InterpreteXML {
             Reader reader = new StringReader(XML);
             validator.validate(new StreamSource(reader));
         } catch (IOException | SAXException e) {
+            e.printStackTrace();
             System.out.println("Exception: "+e.getMessage());
             return false;
         }
