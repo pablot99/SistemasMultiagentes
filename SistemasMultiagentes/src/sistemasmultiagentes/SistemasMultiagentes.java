@@ -24,7 +24,7 @@ public class SistemasMultiagentes {
      */
     public static void main(String[] args) throws IOException {
         
-        int nCompradores = 1;
+        int nCompradores = 100;
         
         ArrayList<Cliente> compradores = new ArrayList<>();
         String ip;
@@ -36,7 +36,8 @@ public class SistemasMultiagentes {
         System.out.println("Introduce el puerto del monitor:");
         puerto = teclado.nextInt();*/
         
-        ip = "172.19.142.126";
+        ip = "172.19.142.126";    //Pablo
+        //ip = "172.19.142.96";       //David
         puerto = 3000;
         
         for (int i = 0; i < nCompradores; i++) {
