@@ -98,11 +98,12 @@ public class Cliente {
             pw.println("\n  Compra en la tienda: " + tienda.toString2() + " realizada.");
 
             // Vemos qué productos hemos comprado
-            mTienda.forEach((Integer id_producto, Producto prod) -> {   
-                productos.get(id_producto).restaCantidad(prod.getCantidad());
-                pw.println("      Compro " + (prod.getCantidad() - mTienda.get(id_producto).getCantidad())
-                        + " unidades del producto " + id_producto + ". Faltan " + mTienda.get(id_producto).getCantidad());
-            });
+            if (mTienda != null)
+                mTienda.forEach((Integer id_producto, Producto prod) -> {   
+                    productos.get(id_producto).restaCantidad(prod.getCantidad());
+                    pw.println("      Compro " + (prod.getCantidad() - mTienda.get(id_producto).getCantidad())
+                            + " unidades del producto " + id_producto + ". Faltan " + mTienda.get(id_producto).getCantidad());
+                });
                         
             // Y actualizamos nuestros productos con los nuevos valores
             productos = mTienda;           
