@@ -44,7 +44,7 @@ import sistemasmultiagentes.Tienda;
 
 /**
  *
- * @author bitde
+ * @author Grupo 2
  */
 public class InterpreteXML {
     String schemaPath = ".//src//XML//TodosMensajes.xsd";

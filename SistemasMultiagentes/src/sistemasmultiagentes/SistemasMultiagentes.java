@@ -11,8 +11,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -30,14 +28,17 @@ public class SistemasMultiagentes {
         
         ArrayList<Cliente> compradores = new ArrayList<>();
         String ip;
+        int puerto;
         Scanner teclado = new Scanner(System.in);
         
         System.out.println("Introduce el ip del monitor:");
         ip = teclado.nextLine();
+        System.out.println("Introduce el puerto del monitor:");
+        puerto = teclado.nextInt();
         
         for (int i = 0; i < nCompradores; i++) {
             crearFicheroLog(i);
-            Cliente comprador = new Cliente(ip,i); //Pasar IP al constructor 
+            Cliente comprador = new Cliente(ip,puerto,i); //Pasar IP al constructor 
             compradores.add(comprador);
         }
         

@@ -29,6 +29,7 @@ public class Cliente {
     private final int id_interno;                       // ID interno del Cliente (el número de cliente en el main)
     private final int id;                               // ID del Cliente
     private final String ipMonitor;                     // IP del Monitor
+    private final int puertoMonitor;                 // Puerto del Monitor
     private final HashSet<Tienda> tConocidas;           // Tiendas conocidas por el Cliente
     private LinkedList<Tienda> tNoVisitadas;            // Tiendas visitadas por el Cliente
     private LinkedList<Tienda> tVisitadas;              // Tiendas visitadas por el Cliente
@@ -44,14 +45,16 @@ public class Cliente {
      * Monitor el ID del Cliente, la Lista de Productos y 2 Tienda conocidas.
      *
      * @param ip IP del Monitor
+     * @param puerto Puerto del Monitor
      * @param id_interno ID interno que utiliza el main para distinguir a cada
      * Cliente
      * @throws java.io.IOException
      */
-    public Cliente(String ip, int id_interno) throws IOException {
+    public Cliente(String ip, int puerto, int id_interno) throws IOException {
         // Inicializaciones
         this.id_interno = id_interno;
         this.ipMonitor = ip;
+        this.puertoMonitor = puerto;
         this.fichero = new FileWriter(".\\logs\\cliente" + id_interno + ".txt", true);
         this.pw = new PrintWriter(fichero);
         this.nVueltas = 0;
@@ -61,7 +64,7 @@ public class Cliente {
         /* Se pide al monitor el ID, la Lista de Productos y las Tienda
          * conocidas mediante el mensaje "mensajeAltaMonitor()".
          */
-        Object[] respuesta = mensajeAltaMonitor(this.ipMonitor);
+        Object[] respuesta = mensajeAltaMonitor(this.ipMonitor, this.puertoMonitor);
         id = (Integer) respuesta[0];
         productos = (HashMap) respuesta[1];
         tConocidas = (HashSet) respuesta[2];
@@ -125,11 +128,12 @@ public class Cliente {
             tVisitadas.add(tienda);
         }
         pw.println("\n\n COMPRA FINALIZADA. PRODUCTOS RESTANTES: " + productos.values().toString() + "\n");
+        mensajeBajaMonitor();
         fichero.close();
     }
 
-    private Object[] mensajeAltaMonitor(String ip) throws IOException{
-        return this.XML.leeAltaMonitor(getHTTP(ip, "crearCliente=True"));
+    private Object[] mensajeAltaMonitor(String ip, int puerto) throws IOException{
+        return this.XML.leeAltaMonitor(getHTTP((ip + ":" + puerto), "crearCliente=True"));
     }
     
     private HashMap<Integer,Producto> mensajeAltaTienda(Tienda tienda) throws IOException{
@@ -147,6 +151,12 @@ public class Cliente {
     private void mensajeBajaTiendas(Tienda tienda) throws IOException{
         String confirmacion = XML.escribeBajaTienda(this.id, tienda);
         postHTTP(confirmacion, tienda.ip+":"+tienda.puerto+"/");       
+    }
+    
+    private void mensajeBajaMonitor() throws IOException{
+        String confirmacion = XML.escribeBajaMonitor(this.id, this.ipMonitor, 
+                this.puertoMonitor, this.productos);  
+        postHTTP(confirmacion, ipMonitor+":"+puertoMonitor+"/");
     }
     
     public int getId_interno() {

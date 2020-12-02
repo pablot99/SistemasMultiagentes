@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  *
- * @author pablo
+ * @author Grupo 2
  */
 public class Tienda {
     
