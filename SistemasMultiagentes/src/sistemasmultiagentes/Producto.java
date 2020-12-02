@@ -94,8 +94,14 @@ public class Producto {
 
         Producto that = (Producto) o;
         return super.equals(that)
-            && Objects.equals(this.id, that.id)
-            && Objects.equals(this.cantidad, that.cantidad);
+            && Objects.equals(this.id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + this.id;
+        return hash;
     }
 
 }

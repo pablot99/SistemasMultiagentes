@@ -19,11 +19,10 @@ import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Map;
 
 /**
  *
- * @author bitde
+ * @author Grupo 2
  */
 public class Cliente {
 
@@ -33,7 +32,7 @@ public class Cliente {
     private final HashSet<Tienda> tConocidas;           // Tiendas conocidas por el Cliente
     private LinkedList<Tienda> tNoVisitadas;            // Tiendas visitadas por el Cliente
     private LinkedList<Tienda> tVisitadas;              // Tiendas visitadas por el Cliente
-    private final HashMap<Integer, Producto> productos;  // Productos a comprar
+    private HashMap<Integer, Producto> productos;       // Productos a comprar
     private int nVueltas;                               // Veces que hemos recorrido el array de Tiendas
     private final int MAXVUELTAS;                       // Máximo de vueltas que vamos a dar al array de Tiendas
     public final FileWriter fichero;                    // FileWriter para escribir los logs
@@ -49,29 +48,6 @@ public class Cliente {
      * Cliente
      * @throws java.io.IOException
      */
-//    public Cliente(String ip, int id_interno) throws IOException{
-//        // Inicializaciones
-//        this.id_interno = id_interno;
-//        this.ipMonitor = ip;
-//        this.fichero = new FileWriter(".\\logs\\cliente" + id_interno + ".txt", true);
-//        this.pw = new PrintWriter(fichero);
-//        this.nVueltas = 0;
-//        this.MAXVUELTAS = 5;
-//
-//        /* Se pide al monitor el ID, la Lista de Productos y las Tienda
-//         * conocidas mediante el mensaje "mensajeAltaMonitor()".
-//        */
-//        Object[] respuesta = mensajeAltaMonitor();
-//        id = (Integer) respuesta[0];
-//        productos = (HashMap) respuesta[1];
-//        tConocidas = (HashSet) respuesta[2];
-//        tNoVisitadas = new LinkedList(tConocidas);
-//        tVisitadas = new LinkedList();
-//
-//        pw.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
-//                 + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
-//                 + "\n PRODUCTOS A COMPRAR: " + productos.values().toString()+ "\n");
-//    }
     public Cliente(String ip, int id_interno) throws IOException {
         // Inicializaciones
         this.id_interno = id_interno;
@@ -108,19 +84,25 @@ public class Cliente {
             }
             Tienda tienda = tNoVisitadas.poll();
 
-            // Me doy de alta en la tienda
-            ArrayList<Producto> respuestaAltaTienda = mensajeAltaTienda(tienda);
-            pw.println("\n  ALTA en la tienda: " + tienda.toString2());
+            // Me doy de alta en la tienda (realizando la compra al mismo tiempo)
+            HashMap<Integer,Producto> mTienda = mensajeAltaTienda(tienda);
+            
+            pw.println("\n  Compra en la tienda: " + tienda.toString2() + " realizada.");
 
-            // Compro los productos
-//            ArrayList<Producto> nuevoProductos = mensajeCompraProductos(tienda, new ArrayList(productos.values()));
-//            pw.println("    Compro los productos de la tienda.");
-
-            for (Producto prod : nuevoProductos) {
-                pw.println("      Compro " + (productos.get(prod.getId()).getCantidad() - prod.getCantidad())
-                        + " unidades del producto " + prod.getId() + ". Faltan " + prod.getCantidad());
-                productos.get(prod.getId()).setCantidad(prod.getCantidad());
-            }
+            // Vemos qué productos hemos comprado
+            productos.forEach((Integer id_producto, Producto prod) -> {                          
+                if (mTienda.containsKey(id_producto)) {
+                    pw.println("      Compro " + (prod.getCantidad() - mTienda.get(id_producto).getCantidad())
+                        + " unidades del producto " + id_producto + ". Faltan " + mTienda.get(id_producto).getCantidad());
+                } else {
+                    pw.println("      Compro " + (prod.getCantidad())
+                        + " unidades del producto " + id_producto + ". Faltan 0");
+                }
+            }); 
+            
+            // Y actualizamos nuestros productos con los nuevos valores
+            productos = mTienda;
+            
 
             //Pedimos la lista de tiendas conocidas a la tienda
             ArrayList<Tienda> respuestaConsultaTiendas = mensajeConsultaTiendas(tienda);
@@ -136,7 +118,7 @@ public class Cliente {
             }
 
             // Nos damos de baja en la tienda
-            String respuestaBajaTienda = postHTTP("Me doy de baja en la tienda", "http://localhost:8500/example");
+            mensajeBajaTiendas(tienda);
             pw.println("  BAJA en la tienda: " + tienda.toString2());
 
             // Añadimos la tienda visitada al final de la lista de tiendas visitadas.
@@ -150,7 +132,7 @@ public class Cliente {
         return this.XML.leeAltaMonitor(getHTTP(ip, "crearCliente=True"));
     }
     
-    private ArrayList<Producto> mensajeAltaTienda(Tienda tienda) throws IOException{
+    private HashMap<Integer,Producto> mensajeAltaTienda(Tienda tienda) throws IOException{
         String confirmacion = XML.escribeAltaTienda(this.id, tienda, this.productos);
         String respuestaPost = postHTTP(confirmacion, tienda.ip+":"+tienda.puerto+"/");
         return XML.leeCompra(respuestaPost);
