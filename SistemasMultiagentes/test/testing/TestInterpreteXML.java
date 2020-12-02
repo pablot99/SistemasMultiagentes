@@ -33,6 +33,7 @@ public class TestInterpreteXML {
             testEscribeConsultaTiendas(interprete);
             testLeeTiendasConocidas(interprete);
             testEscribeBajaTienda(interprete);
+            testEscribeBajaMonitor(interprete);
         } catch (IOException ex) {
             Logger.getLogger(TestInterpreteXML.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -118,6 +119,22 @@ public class TestInterpreteXML {
         Tienda t = new Tienda(0, "192.168.1.0", 8080);       
         
         String result = interprete.escribeBajaTienda(0, t);
+        System.out.println(result);
+        if(interprete.validateSchema(result))
+            System.out.println("ESQUEMA VALIDADO");
+        else
+            System.out.println("EL ESQUEMA NO VALIDA");
+    }
+    
+    static void testEscribeBajaMonitor(InterpreteXML interprete){
+        System.out.println("-----------    TEST ESCRIBE BAJA MONITOR    -----------\n");
+        
+        HashMap<Integer, Producto> p = new HashMap<>();
+        Producto p1 = new Producto(1, 50);
+        p.put(1, p1);
+        Producto p2 = new Producto(2,100);
+        p.put(2, p2);
+        String result = interprete.escribeBajaMonitor(1, "192.168.1.248", 8080, p);
         System.out.println(result);
         if(interprete.validateSchema(result))
             System.out.println("ESQUEMA VALIDADO");
