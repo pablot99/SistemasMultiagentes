@@ -128,30 +128,30 @@ public class Cliente {
     }
 
     private Object[] mensajeAltaMonitor(String ip, int puerto) throws IOException{
-        return this.XML.leeAltaMonitor(getHTTP((ip + ":" + puerto), "crearCliente=True"));
+        return this.XML.leeAltaMonitor(getHTTP(("http://" + ip + ":" + puerto), "crearCliente=True"));
     }
     
     private HashMap<Integer,Producto> mensajeAltaTienda(Tienda tienda) throws IOException{
         String confirmacion = XML.escribeAltaTienda(this.id, tienda, this.productos);
-        String respuestaPost = postHTTP(confirmacion, tienda.ip+":"+tienda.puerto+"/");
+        String respuestaPost = postHTTP(confirmacion, "http://" + tienda.ip+":"+tienda.puerto+"/");
         return XML.leeCompra(respuestaPost);
     }
     
     private ArrayList<Tienda> mensajeConsultaTiendas(Tienda tienda) throws IOException{
         String confirmacion = XML.escribeConsultaTiendas(this.id, tienda, this.tConocidas);
-        String respuestaPost = postHTTP(confirmacion, tienda.ip+":"+tienda.puerto+"/");
+        String respuestaPost = postHTTP(confirmacion, "http://" + tienda.ip+":"+tienda.puerto+"/");
         return XML.leeTiendasConocidas(respuestaPost);
     }
     
     private void mensajeBajaTiendas(Tienda tienda) throws IOException{
         String confirmacion = XML.escribeBajaTienda(this.id, tienda);
-        postHTTP(confirmacion, tienda.ip+":"+tienda.puerto+"/");       
+        postHTTP(confirmacion, "http://" + tienda.ip+":"+tienda.puerto+"/");       
     }
     
     private void mensajeBajaMonitor() throws IOException{
         String confirmacion = XML.escribeBajaMonitor(this.id, this.ipMonitor, 
                 this.puertoMonitor, this.productos);  
-        postHTTP(confirmacion, ipMonitor+":"+puertoMonitor+"/");
+        postHTTP(confirmacion, "http://" + ipMonitor+":"+puertoMonitor+"/");
     }
     
     public int getId_interno() {
