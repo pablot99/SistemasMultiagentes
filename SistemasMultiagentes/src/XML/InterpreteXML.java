@@ -228,7 +228,7 @@ public class InterpreteXML {
             root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
             document.appendChild(root);
                 //elemento head
-                creaHead(document, root, "baja_tienda", id_c, t);
+                creaHead(document, root, "salida_tienda", id_c, t);
                 //elemento body
                 Element body = document.createElement("body");
                 body.setAttribute("xsi:type", "salida_tienda");

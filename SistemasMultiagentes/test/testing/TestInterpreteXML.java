@@ -30,6 +30,9 @@ public class TestInterpreteXML {
             testLeeAltaMonitor(interprete);
             testEscribeAltaTienda(interprete);
             testLeeCompra(interprete);
+            testEscribeConsultaTiendas(interprete);
+            testLeeTiendasConocidas(interprete);
+            testEscribeBajaTienda(interprete);
         } catch (IOException ex) {
             Logger.getLogger(TestInterpreteXML.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -81,6 +84,45 @@ public class TestInterpreteXML {
         //imprimimos los productos
         System.out.println("Productos: \n");
         System.out.println(productos);
+    }
+    
+    static void testEscribeConsultaTiendas(InterpreteXML interprete){
+        System.out.println("-----------    TEST ESCRIBE CONSULTA TIENDAS    -----------\n");
+        ArrayList<Tienda> tiendas= new ArrayList<>();
+        Tienda t = new Tienda(0, "192.168.1.0", 8080);
+        tiendas.add(t);
+        Tienda t1 = new Tienda(1, "192.168.1.1", 8080);
+        tiendas.add(t1);
+        Tienda t2 = new Tienda(2, "192.168.1.2", 8080);
+        tiendas.add(t2);
+        
+        String result = interprete.escribeConsultaTiendas(0, t, tiendas);
+        System.out.println(result);
+        if(interprete.validateSchema(result))
+            System.out.println("ESQUEMA VALIDADO");
+        else
+            System.out.println("EL ESQUEMA NO VALIDA");
+    }
+    
+    static void testLeeTiendasConocidas(InterpreteXML interprete) throws IOException{
+        System.out.println("-----------    TEST LEE TIENDAS CONOCIDAS    -----------\n");
+        String cadena=fileToString(".\\test\\XMLinput\\respuesta_tiendas_conocidas.xml");
+        System.out.println("Mensaje: " + cadena);
+        ArrayList<Tienda> tiendas= interprete.leeTiendasConocidas(cadena);
+        //imprimimos los productos
+        System.out.println("Tiendas: \n");
+        System.out.println(tiendas);
+    }
+    static void testEscribeBajaTienda(InterpreteXML interprete){
+        System.out.println("-----------    TEST ESCRIBE BAJA TIENDA    -----------\n");
+        Tienda t = new Tienda(0, "192.168.1.0", 8080);       
+        
+        String result = interprete.escribeBajaTienda(0, t);
+        System.out.println(result);
+        if(interprete.validateSchema(result))
+            System.out.println("ESQUEMA VALIDADO");
+        else
+            System.out.println("EL ESQUEMA NO VALIDA");
     }
     
     static String fileToString(String ruta) throws FileNotFoundException, IOException{
