@@ -70,7 +70,11 @@ public class Cliente {
         tConocidas = (HashSet) respuesta[2];
         tNoVisitadas = new LinkedList(tConocidas);
         tVisitadas = new LinkedList();
-
+        System.out.println("-------- RESPUESTA MONITOR --------");
+        System.out.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
+                + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
+                + "\n PRODUCTOS A COMPRAR: " + productos.values().toString() + "\n");
+        
         pw.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
                 + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
                 + "\n PRODUCTOS A COMPRAR: " + productos.values().toString() + "\n");
@@ -133,7 +137,7 @@ public class Cliente {
     }
 
     private Object[] mensajeAltaMonitor(String ip, int puerto) throws IOException{
-        return this.XML.leeAltaMonitor(getHTTP((ip + ":" + puerto), "crearCliente=True"));
+        return this.XML.leeAltaMonitor(getHTTP(("http://"+ip + ":" + puerto), "crearCliente=True"));
     }
     
     private HashMap<Integer,Producto> mensajeAltaTienda(Tienda tienda) throws IOException{

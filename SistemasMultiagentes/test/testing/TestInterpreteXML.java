@@ -81,7 +81,7 @@ public class TestInterpreteXML {
         System.out.println("-----------    TEST LEE COMPRA    -----------\n");
         String cadena=fileToString(".\\test\\XMLinput\\confirmacion_compra.xml");
         System.out.println("Mensaje: " + cadena);
-        ArrayList<Producto> productos= interprete.leeCompra(cadena);
+        HashMap<Integer, Producto> productos= interprete.leeCompra(cadena);
         //imprimimos los productos
         System.out.println("Productos: \n");
         System.out.println(productos);
