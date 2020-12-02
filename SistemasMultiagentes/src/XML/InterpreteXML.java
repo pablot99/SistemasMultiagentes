@@ -155,7 +155,7 @@ public class InterpreteXML {
     }
     
     
-    public String escribeConsultaTiendas(int id_c, Tienda t, ArrayList<Tienda> tiendas){
+    public String escribeConsultaTiendas(int id_c, Tienda t, HashSet<Tienda> tiendas){
         try {
             DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
@@ -174,12 +174,12 @@ public class InterpreteXML {
                     Element lP = document.createElement("lista_tiendas");
                     body.appendChild(lP);
                         //elementos producto
-                        for (int i = 0; i < tiendas.size(); i++) {
+                        for (Tienda i:tiendas) {
                             Element tiend = document.createElement("tienda");
                             lP.appendChild(tiend);
-                            addNodoTexto(document, tiend, "id_tienda", Integer.toString(tiendas.get(i).getId()));
-                            addNodoTexto(document, tiend, "ip_tienda", tiendas.get(i).getIp());
-                            addNodoTexto(document, tiend, "puerto", Integer.toString(tiendas.get(i).getPuerto()));
+                            addNodoTexto(document, tiend, "id_tienda", Integer.toString(i.getId()));
+                            addNodoTexto(document, tiend, "ip_tienda", i.getIp());
+                            addNodoTexto(document, tiend, "puerto", Integer.toString(i.getPuerto()));
                         }
             return getStringFromDocument(document);
         } catch (ParserConfigurationException ex) {

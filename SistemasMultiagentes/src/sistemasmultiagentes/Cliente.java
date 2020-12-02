@@ -5,6 +5,7 @@
  */
 package sistemasmultiagentes;
 
+import XML.InterpreteXML;
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,7 +38,8 @@ public class Cliente {
     private final int MAXVUELTAS;                       // Máximo de vueltas que vamos a dar al array de Tiendas
     public final FileWriter fichero;                    // FileWriter para escribir los logs
     public final PrintWriter pw;                        // PrintWriter para escribir los logs
-
+    public InterpreteXML XML;
+    
     /**
      * Constructor para el cliente. Inicializa las variables y obtiene del
      * Monitor el ID del Cliente, la Lista de Productos y 2 Tienda conocidas.
@@ -74,17 +76,16 @@ public class Cliente {
         // Inicializaciones
         this.id_interno = id_interno;
         this.ipMonitor = ip;
-        String resp = getHTTP(ip, "crearCliente=True");
-        System.out.println(resp);
         this.fichero = new FileWriter(".\\logs\\cliente" + id_interno + ".txt", true);
         this.pw = new PrintWriter(fichero);
         this.nVueltas = 0;
         this.MAXVUELTAS = 5;
+        this.XML = new InterpreteXML();
 
         /* Se pide al monitor el ID, la Lista de Productos y las Tienda
          * conocidas mediante el mensaje "mensajeAltaMonitor()".
          */
-        Object[] respuesta = mensajeAltaMonitor();
+        Object[] respuesta = mensajeAltaMonitor(this.ipMonitor);
         id = (Integer) respuesta[0];
         productos = (HashMap) respuesta[1];
         tConocidas = (HashSet) respuesta[2];
@@ -108,12 +109,12 @@ public class Cliente {
             Tienda tienda = tNoVisitadas.poll();
 
             // Me doy de alta en la tienda
-            String respuestaAltaTienda = mensajeAltaTienda(tienda, tConocidas);
+            ArrayList<Producto> respuestaAltaTienda = mensajeAltaTienda(tienda);
             pw.println("\n  ALTA en la tienda: " + tienda.toString2());
 
             // Compro los productos
-            ArrayList<Producto> nuevoProductos = mensajeCompraProductos(tienda, new ArrayList(productos.values()));
-            pw.println("    Compro los productos de la tienda.");
+//            ArrayList<Producto> nuevoProductos = mensajeCompraProductos(tienda, new ArrayList(productos.values()));
+//            pw.println("    Compro los productos de la tienda.");
 
             for (Producto prod : nuevoProductos) {
                 pw.println("      Compro " + (productos.get(prod.getId()).getCantidad() - prod.getCantidad())
@@ -145,93 +146,27 @@ public class Cliente {
         fichero.close();
     }
 
-    // como aún no podemos recibir mensajes de la tienda, leemos de un fichero de texto
-    // mensajes que hemos escrito
-    private Object[] mensajeAltaMonitor() {
-        Object[] array = new Object[3];
-
-        // Añadimos el ID
-        array[0] = (int) (Math.random() * 10000);
-
-        // Añadimos los Productos
-        HashMap<Integer, Producto> prods = new HashMap<>();
-        for (int i = 0; i < 5; i++) {
-            prods.put(i, new Producto(i, (int) (1 + (Math.random() * 100))));
-        }
-
-        array[1] = prods;
-
-        // Añadimos las Tiendas
-        HashSet tiendas = new HashSet();
-        tiendas.add(new Tienda(0, "1.1.1.1", 62));
-        tiendas.add(new Tienda(1, "2.2.2.2", 62));
-        tiendas.add(new Tienda(2, "3.3.3.3", 62));
-
-        array[2] = tiendas;
-
-        return array;
+    private Object[] mensajeAltaMonitor(String ip) throws IOException{
+        return this.XML.leeAltaMonitor(getHTTP(ip, "crearCliente=True"));
     }
-
-    private String mensajeAltaTienda(Tienda tienda, HashSet<Tienda> tConocidas) {
-
-        // Mismos pasos iniciales
-        // Para darnos de alta en la tienda necesitamos su IP y pedir permiso al monitor
-        // Recibiremos un mensaje de la tienda que nos indique que nos hemos dado de alta correctamente
-        String respuesta = "Se ha dado de alta correctamente";
-        return respuesta;
-
+    
+    private ArrayList<Producto> mensajeAltaTienda(Tienda tienda) throws IOException{
+        String confirmacion = XML.escribeAltaTienda(this.id, tienda, this.productos);
+        String respuestaPost = postHTTP(confirmacion, tienda.ip+":"+tienda.puerto+"/");
+        return XML.leeCompra(respuestaPost);
     }
-
-    private ArrayList<Producto> mensajeCompraProductos(Tienda tienda, ArrayList<Producto> prod) {
-        ArrayList<Producto> res = new ArrayList<>();
-        int random = Integer.MAX_VALUE;
-
-        for (int i = 0; i < prod.size(); i++) {
-            while (random > prod.get(i).getCantidad()) {
-                random = (int) (Math.random() * 20);
-            }
-            res.add(new Producto(i, prod.get(i).getCantidad() - random));
-
-            random = Integer.MAX_VALUE;
-        }
-
-        return res;
+    
+    private ArrayList<Tienda> mensajeConsultaTiendas(Tienda tienda) throws IOException{
+        String confirmacion = XML.escribeConsultaTiendas(this.id, tienda, this.tConocidas);
+        String respuestaPost = postHTTP(confirmacion, tienda.ip+":"+tienda.puerto+"/");
+        return XML.leeTiendasConocidas(respuestaPost);
     }
-
-    private ArrayList<Tienda> mensajeConsultaTiendas(Tienda tienda) {
-        ArrayList<Tienda> tiendasSiguientes = new ArrayList<>();
-        // Mismos pasos iniciales de antes
-        // Pedimos a la tienda las tiendas que conozca un cliente conociendo su Id
-
-        return tiendasSiguientes;
+    
+    private void mensajeBajaTiendas(Tienda tienda) throws IOException{
+        String confirmacion = XML.escribeBajaTienda(this.id, tienda);
+        postHTTP(confirmacion, tienda.ip+":"+tienda.puerto+"/");       
     }
-
-    private String mensajeBajaTiendas() {
-        String respuesta = "Se ha dado de baja correctamente";
-        // Mismos pasos iniciales
-        // Para darnos de baja en la tienda necesitamos su IP y pedir permiso al monitor
-        // Recibiremos un mensaje de la tienda que nos indique que nos hemos dado de baja correctamente
-
-        return respuesta;
-    }
-
-    /*
-    private Document xmlToDom(File f){
-        try {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(f);
-            doc.getDocumentElement().normalize();
-            return doc;
-        } catch (Exception ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-     */
-    /**
-     * @return the id_interno
-     */
+    
     public int getId_interno() {
         return id_interno;
     }
