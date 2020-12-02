@@ -31,10 +31,13 @@ public class SistemasMultiagentes {
         int puerto;
         Scanner teclado = new Scanner(System.in);
         
-        System.out.println("Introduce el ip del monitor:");
+        /*System.out.println("Introduce el ip del monitor:");
         ip = teclado.nextLine();
         System.out.println("Introduce el puerto del monitor:");
-        puerto = teclado.nextInt();
+        puerto = teclado.nextInt();*/
+        
+        ip = "172.19.142.126";
+        puerto = 3000;
         
         for (int i = 0; i < nCompradores; i++) {
             crearFicheroLog(i);
