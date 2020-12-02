@@ -26,18 +26,18 @@ import java.util.LinkedList;
  */
 public class Cliente {
 
-    private final int id_interno;                       // ID interno del Cliente (el número de cliente en el main)
-    private final int id;                               // ID del Cliente
-    private final String ipMonitor;                     // IP del Monitor
-    private final int puertoMonitor;                 // Puerto del Monitor
-    private final HashSet<Tienda> tConocidas;           // Tiendas conocidas por el Cliente
-    private LinkedList<Tienda> tNoVisitadas;            // Tiendas visitadas por el Cliente
-    private LinkedList<Tienda> tVisitadas;              // Tiendas visitadas por el Cliente
-    private HashMap<Integer, Producto> productos;       // Productos a comprar
-    private int nVueltas;                               // Veces que hemos recorrido el array de Tiendas
-    private final int MAXVUELTAS;                       // Máximo de vueltas que vamos a dar al array de Tiendas
-    public final FileWriter fichero;                    // FileWriter para escribir los logs
-    public final PrintWriter pw;                        // PrintWriter para escribir los logs
+    private int id_interno;                         // ID interno del Cliente (el número de cliente en el main)
+    private int id;                                 // ID del Cliente
+    private String ipMonitor;                       // IP del Monitor
+    private int puertoMonitor;                      // Puerto del Monitor
+    private HashSet<Tienda> tConocidas;             // Tiendas conocidas por el Cliente
+    private LinkedList<Tienda> tNoVisitadas;        // Tiendas visitadas por el Cliente
+    private LinkedList<Tienda> tVisitadas;          // Tiendas visitadas por el Cliente
+    private HashMap<Integer, Producto> productos;   // Productos a comprar
+    private int nVueltas;                           // Veces que hemos recorrido el array de Tiendas
+    private int MAXVUELTAS;                         // Máximo de vueltas que vamos a dar al array de Tiendas
+    public FileWriter fichero;                      // FileWriter para escribir los logs
+    public PrintWriter pw;                          // PrintWriter para escribir los logs
     public InterpreteXML XML;
     
     /**
@@ -60,14 +60,16 @@ public class Cliente {
         this.nVueltas = 0;
         this.MAXVUELTAS = 5;
         this.XML = new InterpreteXML();
+    }
 
+    public void funcionDelCliente() throws IOException {
         /* Se pide al monitor el ID, la Lista de Productos y las Tienda
          * conocidas mediante el mensaje "mensajeAltaMonitor()".
          */
-        Object[] respuesta = mensajeAltaMonitor(this.ipMonitor, this.puertoMonitor);
-        id = (Integer) respuesta[0];
-        productos = (HashMap) respuesta[1];
-        tConocidas = (HashSet) respuesta[2];
+        Object[] resp = mensajeAltaMonitor(this.ipMonitor, this.puertoMonitor);
+        id = (Integer) resp[0];
+        productos = (HashMap) resp[1];
+        tConocidas = (HashSet) resp[2];
         tNoVisitadas = new LinkedList(tConocidas);
         tVisitadas = new LinkedList();
         System.out.println("-------- RESPUESTA MONITOR --------");
@@ -78,9 +80,8 @@ public class Cliente {
         pw.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
                 + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
                 + "\n PRODUCTOS A COMPRAR: " + productos.values().toString() + "\n");
-    }
-
-    public void funcionDelCliente() throws IOException {
+    
+        
         while (!finalizado() && nVueltas < MAXVUELTAS) {
             // Obtenemos la primera tienda de la lista de no visitadas
             if (tNoVisitadas.isEmpty()) {
