@@ -105,7 +105,7 @@ public class InterpreteXML {
             root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
             document.appendChild(root);
                 //elemento head
-                creaHead(document, root, "entrada_tienda", id_c, t);
+                creaHead(document, root, "tienda", "entrada_tienda", id_c, t);
                 //elemento body
                 Element body = document.createElement("body");
                 body.setAttribute("xsi:type", "entrada_tienda");
@@ -165,7 +165,7 @@ public class InterpreteXML {
             root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
             document.appendChild(root);
                 //elemento head
-                creaHead(document, root, "solicitar_tiendas", id_c, t);
+                creaHead(document, root, "tienda", "solicitar_tiendas", id_c, t);
                 //elemento body
                 Element body = document.createElement("body");
                 body.setAttribute("xsi:type", "solicitar_tiendas");
@@ -228,7 +228,7 @@ public class InterpreteXML {
             root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
             document.appendChild(root);
                 //elemento head
-                creaHead(document, root, "salida_tienda", id_c, t);
+                creaHead(document, root, "tienda", "salida_tienda", id_c, t);
                 //elemento body
                 Element body = document.createElement("body");
                 body.setAttribute("xsi:type", "salida_tienda");
@@ -240,10 +240,44 @@ public class InterpreteXML {
             return null;
         }
     }
+    
+    public String escribeBajaMonitor(int id_c, String ipMonitor, int puertoMonitor, HashMap<Integer, Producto> comprados){
+        try {
+            DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
+            Document document = documentBuilder.newDocument();
+            //elemento root 
+            Element root = document.createElement("root");
+            root.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            document.appendChild(root);
+                //elemento head
+                Tienda t=new Tienda(-1, ipMonitor, puertoMonitor);
+                creaHead(document, root, "monitor", "finalizacion_cliente", id_c, t);
+                //elemento body
+                Element body = document.createElement("body");
+                body.setAttribute("xsi:type", "finalizacion_cliente");
+                root.appendChild(body);
+                //elemento lista_productos
+                    Element lP = document.createElement("lista_productos");
+                    body.appendChild(lP);
+                        //elementos producto
+                        for (Map.Entry<Integer, Producto> e : comprados.entrySet()) {
+                            Element prod = document.createElement("producto");
+                            lP.appendChild(prod);
+                            addNodoTexto(document, prod, "id_producto", Integer.toString(e.getValue().getId()));
+                            addNodoTexto(document, prod, "cantidad", Integer.toString(e.getValue().getCantidad()));
+                        }
+                  
+            return getStringFromDocument(document);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(InterpreteXML.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 
     
     //crea el elemento head con su formato correcto y lo anade al elemento root
-    private void creaHead(Document document, Element root, String tipo_mensaje, int id_c, Tienda t){
+    private void creaHead(Document document, Element root, String tipoReceptor, String tipo_mensaje, int id_c, Tienda t){
         //elemento head
         Element head = document.createElement("head");
         root.appendChild(head);
@@ -265,7 +299,7 @@ public class InterpreteXML {
             addNodoTexto(document, head, "puerto_emisor", "-1");
             
             //elemento tipo_receptor
-            addNodoTexto(document, head, "tipo_receptor", "tienda");
+            addNodoTexto(document, head, "tipo_receptor", tipoReceptor);
             //elemento id receptor
             addNodoTexto(document, head, "id_receptor", Integer.toString(t.getId()));
             //elemento ip receptor
