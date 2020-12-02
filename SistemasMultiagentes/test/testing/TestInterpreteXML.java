@@ -88,7 +88,7 @@ public class TestInterpreteXML {
     
     static void testEscribeConsultaTiendas(InterpreteXML interprete){
         System.out.println("-----------    TEST ESCRIBE CONSULTA TIENDAS    -----------\n");
-        ArrayList<Tienda> tiendas= new ArrayList<>();
+        HashSet<Tienda> tiendas= new HashSet<>();
         Tienda t = new Tienda(0, "192.168.1.0", 8080);
         tiendas.add(t);
         Tienda t1 = new Tienda(1, "192.168.1.1", 8080);
