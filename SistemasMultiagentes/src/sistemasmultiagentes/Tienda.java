@@ -65,10 +65,11 @@ public class Tienda {
             return false;
 
         Tienda that = (Tienda) o;
-        return super.equals(that)
-            && Objects.equals(this.id, that.id)
-            && Objects.equals(this.puerto, that.puerto)
-            && Objects.equals(this.ip, that.ip);
+//        return super.equals(that)
+//            && Objects.equals(this.id, that.id)
+//            && Objects.equals(this.puerto, that.puerto)
+//            && Objects.equals(this.ip, that.ip);
+        return that.hashCode() == this.hashCode();
     }
 
     @Override
