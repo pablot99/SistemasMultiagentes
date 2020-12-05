@@ -24,20 +24,21 @@ public class SistemasMultiagentes {
      */
     public static void main(String[] args) throws IOException {
         
-        int nCompradores = 100;
+        int nCompradores = 1;
         
         ArrayList<Cliente> compradores = new ArrayList<>();
         String ip;
         int puerto;
-        Scanner teclado = new Scanner(System.in);
+        //Scanner teclado = new Scanner(System.in);
         
         /*System.out.println("Introduce el ip del monitor:");
         ip = teclado.nextLine();
         System.out.println("Introduce el puerto del monitor:");
         puerto = teclado.nextInt();*/
         
-        ip = "172.19.142.126";    //Pablo
+        //ip = "172.19.142.126";    //Pablo
         //ip = "172.19.142.96";       //David
+        ip="localhost";
         puerto = 3000;
         
         for (int i = 0; i < nCompradores; i++) {

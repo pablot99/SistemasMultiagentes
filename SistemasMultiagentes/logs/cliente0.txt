@@ -1,14 +1,24 @@
 
- COMPRADOR 0 creado a las 18:53:20.370322700
+ COMPRADOR 0 creado a las 19:34:30.151507300
 
- ID ASIGNADO: 0 a las 18:53:34.862775
+ ID ASIGNADO: 3 a las 19:34:30.244592200
 
  TIENDAS CONOCIDAS: [
-   Tienda 0: 172.19.146.201:80]
+   Tienda 10: localhost:8001]
 
  PRODUCTOS A COMPRAR: [
-   Producto 147, cantidad 256]
+   Producto 1, cantidad 3, 
+   Producto 3, cantidad 5]
 
+
+  Compra en la tienda: Tienda 10: localhost:8001 realizada.
+      Compro 0 unidades del producto 1. Faltan 3
+    Consultamos las tiendas conocidas.
+      Nueva tienda: 
+   Tienda 10: localhost:8001
+      Nueva tienda: 
+   Tienda 11: localhost:8002
+  BAJA en la tienda: Tienda 10: localhost:8001
 
 
 

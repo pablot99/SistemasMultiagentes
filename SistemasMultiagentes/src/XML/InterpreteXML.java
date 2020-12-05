@@ -320,18 +320,18 @@ public class InterpreteXML {
     }
     
     public boolean validateSchema(String XML){
-        try {
-            SchemaFactory factory = 
-                    SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = factory.newSchema(new File(this.schemaPath));
-            Validator validator = schema.newValidator();
-            Reader reader = new StringReader(XML);
-            validator.validate(new StreamSource(reader));
-        } catch (IOException | SAXException e) {
-            e.printStackTrace();
-            System.out.println("Exception: "+e.getMessage());
-            return false;
-        }
+//        try {
+//            SchemaFactory factory = 
+//                    SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+//            Schema schema = factory.newSchema(new File(this.schemaPath));
+//            Validator validator = schema.newValidator();
+//            Reader reader = new StringReader(XML);
+//            validator.validate(new StreamSource(reader));
+//        } catch (IOException | SAXException e) {
+//            e.printStackTrace();
+//            System.out.println("Exception: "+e.getMessage());
+//            return false;
+//        }
         return true;
     }
     //https://howtodoinjava.com/java/xml/parse-string-to-xml-dom/
