@@ -100,13 +100,10 @@ public class Cliente {
             if (mTienda != null) {
                 mTienda.forEach((Integer id_producto, Producto prod) -> {
                     productos.get(id_producto).restaCantidad(prod.getCantidad());
-                    pw.println("      Compro " + (prod.getCantidad() - mTienda.get(id_producto).getCantidad())
-                            + " unidades del producto " + id_producto + ". Faltan " + mTienda.get(id_producto).getCantidad());
+                    pw.println("      Compro " +  prod.getCantidad()
+                            + " unidades del producto " + id_producto + ". Faltan " + productos.get(id_producto).getCantidad());
                 });
             }
-
-            // Y actualizamos nuestros productos con los nuevos valores
-            productos = mTienda;
 
             //Pedimos la lista de tiendas conocidas a la tienda
             ArrayList<Tienda> respuestaConsultaTiendas = mensajeConsultaTiendas(tienda);
@@ -151,7 +148,7 @@ public class Cliente {
 
     private void mensajeBajaTiendas(Tienda tienda) throws IOException {
         String confirmacion = XML.escribeBajaTienda(this.id, tienda);
-        postHTTP(confirmacion, "http://" + tienda.ip + ":" + tienda.puerto + "/", false);
+        postHTTP(confirmacion, "http://" + tienda.ip + ":" + tienda.puerto + "/", true);
     }
 
     private void mensajeBajaMonitor() throws IOException {
@@ -183,8 +180,8 @@ public class Cliente {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
         // Set timeout as per needs
-        connection.setConnectTimeout(20000);
-        connection.setReadTimeout(20000);
+        connection.setConnectTimeout(2000);
+        connection.setReadTimeout(200000);
 
         // Set DoOutput to true if you want to use URLConnection for output.
         // Default is false
@@ -222,8 +219,8 @@ public class Cliente {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         String respuestaS = " ";
         // Set timeout as per needs
-        connection.setConnectTimeout(20000);
-        connection.setReadTimeout(20000);
+        connection.setConnectTimeout(2000);
+        connection.setReadTimeout(200000);
 
         // Set DoOutput to true if you want to use URLConnection for output.
         // Default is false
