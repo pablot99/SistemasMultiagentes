@@ -39,7 +39,7 @@ public class Cliente {
     public FileWriter fichero;                      // FileWriter para escribir los logs
     public PrintWriter pw;                          // PrintWriter para escribir los logs
     public InterpreteXML XML;
-    
+
     /**
      * Constructor para el cliente. Inicializa las variables y obtiene del
      * Monitor el ID del Cliente, la Lista de Productos y 2 Tienda conocidas.
@@ -76,12 +76,11 @@ public class Cliente {
         System.out.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
                 + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
                 + "\n PRODUCTOS A COMPRAR: " + productos.values().toString() + "\n");
-        
+
         pw.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
                 + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
                 + "\n PRODUCTOS A COMPRAR: " + productos.values().toString() + "\n");
-    
-        
+
         while (!finalizado() && nVueltas < MAXVUELTAS) {
             // Obtenemos la primera tienda de la lista de no visitadas
             if (tNoVisitadas.isEmpty()) {
@@ -93,20 +92,21 @@ public class Cliente {
             Tienda tienda = tNoVisitadas.poll();
 
             // Me doy de alta en la tienda (realizando la compra al mismo tiempo)
-            HashMap<Integer,Producto> mTienda = mensajeAltaTienda(tienda);
-            
+            HashMap<Integer, Producto> mTienda = mensajeAltaTienda(tienda);
+
             pw.println("\n  Compra en la tienda: " + tienda.toString2() + " realizada.");
 
             // Vemos qué productos hemos comprado
-            if (mTienda != null)
-                mTienda.forEach((Integer id_producto, Producto prod) -> {   
+            if (mTienda != null) {
+                mTienda.forEach((Integer id_producto, Producto prod) -> {
                     productos.get(id_producto).restaCantidad(prod.getCantidad());
                     pw.println("      Compro " + (prod.getCantidad() - mTienda.get(id_producto).getCantidad())
                             + " unidades del producto " + id_producto + ". Faltan " + mTienda.get(id_producto).getCantidad());
                 });
-                        
+            }
+
             // Y actualizamos nuestros productos con los nuevos valores
-            productos = mTienda;           
+            productos = mTienda;
 
             //Pedimos la lista de tiendas conocidas a la tienda
             ArrayList<Tienda> respuestaConsultaTiendas = mensajeConsultaTiendas(tienda);
@@ -133,33 +133,33 @@ public class Cliente {
         fichero.close();
     }
 
-    private Object[] mensajeAltaMonitor(String ip, int puerto) throws IOException{
+    private Object[] mensajeAltaMonitor(String ip, int puerto) throws IOException {
         return this.XML.leeAltaMonitor(getHTTP(("http://" + ip + ":" + puerto), "crearCliente=True"));
     }
-    
-    private HashMap<Integer,Producto> mensajeAltaTienda(Tienda tienda) throws IOException{
+
+    private HashMap<Integer, Producto> mensajeAltaTienda(Tienda tienda) throws IOException {
         String confirmacion = XML.escribeAltaTienda(this.id, tienda, this.productos);
-        String respuestaPost = postHTTP(confirmacion, "http://" + tienda.ip+":"+tienda.puerto+"/");
+        String respuestaPost = postHTTP(confirmacion, "http://" + tienda.ip + ":" + tienda.puerto + "/", true);
         return XML.leeCompra(respuestaPost);
     }
-    
-    private ArrayList<Tienda> mensajeConsultaTiendas(Tienda tienda) throws IOException{
+
+    private ArrayList<Tienda> mensajeConsultaTiendas(Tienda tienda) throws IOException {
         String confirmacion = XML.escribeConsultaTiendas(this.id, tienda, this.tConocidas);
-        String respuestaPost = postHTTP(confirmacion, "http://" + tienda.ip+":"+tienda.puerto+"/");
+        String respuestaPost = postHTTP(confirmacion, "http://" + tienda.ip + ":" + tienda.puerto + "/", true);
         return XML.leeTiendasConocidas(respuestaPost);
     }
-    
-    private void mensajeBajaTiendas(Tienda tienda) throws IOException{
+
+    private void mensajeBajaTiendas(Tienda tienda) throws IOException {
         String confirmacion = XML.escribeBajaTienda(this.id, tienda);
-        postHTTP(confirmacion, "http://" + tienda.ip+":"+tienda.puerto+"/");       
+        postHTTP(confirmacion, "http://" + tienda.ip + ":" + tienda.puerto + "/", false);
     }
-    
-    private void mensajeBajaMonitor() throws IOException{
-        String confirmacion = XML.escribeBajaMonitor(this.id, this.ipMonitor, 
-                this.puertoMonitor, this.productos);  
-        postHTTP(confirmacion, "http://" + ipMonitor+":"+puertoMonitor+"/");
+
+    private void mensajeBajaMonitor() throws IOException {
+        String confirmacion = XML.escribeBajaMonitor(this.id, this.ipMonitor,
+                this.puertoMonitor, this.productos);
+        postHTTP(confirmacion, "http://" + ipMonitor + ":" + puertoMonitor + "/", false);
     }
-    
+
     public int getId_interno() {
         return id_interno;
     }
@@ -217,10 +217,10 @@ public class Cliente {
         return response.toString();
     }
 
-    private String postHTTP(String mensaje, String URL) throws MalformedURLException, IOException {
+    private String postHTTP(String mensaje, String URL, Boolean respuesta) throws MalformedURLException, IOException {
         URL url = new URL(URL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
+        String respuestaS = " ";
         // Set timeout as per needs
         connection.setConnectTimeout(20000);
         connection.setReadTimeout(20000);
@@ -244,16 +244,19 @@ public class Cliente {
         outputStream.close();
 
         // Read XML
-        InputStream inputStream = connection.getInputStream();
-        byte[] res = new byte[2048];
-        int i = 0;
-        StringBuilder response = new StringBuilder();
-        while ((i = inputStream.read(res)) != -1) {
-            response.append(new String(res, 0, i));
-        }
-        inputStream.close();
-
+        if (respuesta) {
+            InputStream inputStream = connection.getInputStream();
+            byte[] res = new byte[2048];
+            int i = 0;
+            StringBuilder response = new StringBuilder();
+            while ((i = inputStream.read(res)) != -1) {
+                response.append(new String(res, 0, i));
+            }
+            inputStream.close();
+        
         System.out.println("Response= " + response.toString());
         return response.toString();
+        }
+        return respuestaS;
     }
 }
