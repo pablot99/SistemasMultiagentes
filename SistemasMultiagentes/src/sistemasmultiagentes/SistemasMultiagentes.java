@@ -29,21 +29,17 @@ public class SistemasMultiagentes {
         ArrayList<Cliente> compradores = new ArrayList<>();
         String ip;
         int puerto;
-        //Scanner teclado = new Scanner(System.in);
+        Scanner teclado = new Scanner(System.in);
         
-        /*System.out.println("Introduce el ip del monitor:");
+        // Pedimos por pantalla la ip y el puerto del monitor
+        System.out.println("Introduce el ip del monitor:");
         ip = teclado.nextLine();
         System.out.println("Introduce el puerto del monitor:");
-        puerto = teclado.nextInt();*/
-        
-        //ip = "172.19.164.14";    //Pablo
-        ip = "172.19.164.151";     //David
-        //ip = "localhost";
-        puerto = 3000;
-        
+        puerto = teclado.nextInt();
+
         for (int i = 0; i < nCompradores; i++) {
             crearFicheroLog(i);
-            Cliente comprador = new Cliente(ip,puerto,i); //Pasar IP al constructor 
+            Cliente comprador = new Cliente(ip,puerto,i); //Pasar IP, puerto e ID interno al constructor 
             compradores.add(comprador);
         }
         

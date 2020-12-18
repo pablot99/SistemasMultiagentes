@@ -38,12 +38,10 @@ public class Cliente {
     private int MAXVUELTAS;                         // Máximo de vueltas que vamos a dar al array de Tiendas
     public FileWriter fichero;                      // FileWriter para escribir los logs
     public PrintWriter pw;                          // PrintWriter para escribir los logs
-    public InterpreteXML XML;
+    public InterpreteXML XML;                       // Intérprete XML
 
     /**
-     * Constructor para el cliente. Inicializa las variables y obtiene del
-     * Monitor el ID del Cliente, la Lista de Productos y 2 Tienda conocidas.
-     *
+     * Constructor para el cliente. Inicializa las variables.
      * @param ip IP del Monitor
      * @param puerto Puerto del Monitor
      * @param id_interno ID interno que utiliza el main para distinguir a cada
@@ -72,10 +70,6 @@ public class Cliente {
         tConocidas = (HashSet) resp[2];
         tNoVisitadas = new LinkedList(tConocidas);
         tVisitadas = new LinkedList();
-        System.out.println("-------- RESPUESTA MONITOR --------");
-        System.out.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
-                + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
-                + "\n PRODUCTOS A COMPRAR: " + productos.values().toString() + "\n");
 
         pw.println(" ID ASIGNADO: " + id + " a las " + LocalTime.now() + "\n"
                 + "\n TIENDAS CONOCIDAS: " + tConocidas.toString() + "\n"
@@ -193,13 +187,6 @@ public class Cliente {
         // Set Headers
         connection.setRequestProperty("Content-Type", "application/xml");
 
-//connection.setRequestProperty("Content-Type", "application/xml");
-        // Write XML
-//        OutputStream outputStream = connection.getOutputStream();
-//        byte[] b = query.getBytes("UTF-8");
-//        outputStream.write(b);
-//        outputStream.flush();
-//        outputStream.close();
         // Read XML
         InputStream inputStream = connection.getInputStream();
         byte[] res = new byte[2048];
